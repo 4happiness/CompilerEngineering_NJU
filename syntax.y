@@ -1,5 +1,5 @@
 %{
-#include "n-tree.h"
+#include "multiway_tree.h"
 #include "lex.yy.c"
 #define MIN(a,b) a<=b?a:b
 extern Node* root;
