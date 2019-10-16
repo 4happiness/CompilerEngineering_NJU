@@ -1,7 +1,7 @@
 %{
 #include "syntax.tab.h"
-extern int error_flag;
-char currentStr[200];
+extern int errorNum;
+extern char currentStr[];
 /*
 int yycolumn = 1;
 #define YY_USER_ACTION yylloc.first_line = yylloc.last_line = yylineno;\
@@ -35,7 +35,7 @@ while { yylval.type_node = createNode("WHILE","",2,yylineno);strncpy(currentStr,
 {WS}
 {FLOAT} { yylval.type_node = createNode("FLOAT",yytext,2,yylineno);strncpy(currentStr,yytext,200);return FLOAT; }
 {illegal_FLOAT} { printf("Error type A at Line %d: Illegal floating point number \"%s\"\n", yylineno, yytext);
-		error_flag=1;
+		errorNum++;
 		yylval.type_node = createNode("Illegal",yytext,3,yylineno);
 		strncpy(currentStr,yytext,200);
 		return FLOAT;
@@ -59,5 +59,5 @@ while { yylval.type_node = createNode("WHILE","",2,yylineno);strncpy(currentStr,
 "||" { yylval.type_node = createNode("OR","",2,yylineno);strncpy(currentStr,yytext,200);return OR; }
 "." { yylval.type_node = createNode("DOT","",2,yylineno);strncpy(currentStr,yytext,200);return DOT; }
 "!" { yylval.type_node = createNode("NOT","",2,yylineno);strncpy(currentStr,yytext,200);return NOT; }
-. { printf("Error type A at Line %d: Mysterious characters \"%s\"\n", yylineno, yytext); error_flag=1; }
+. { printf("Error type A at Line %d: Mysterious characters \"%s\"\n", yylineno, yytext); errorNum++; }
 %%

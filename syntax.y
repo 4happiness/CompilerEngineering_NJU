@@ -2,16 +2,15 @@
 #include "multiway_tree.h"
 #include "lex.yy.c"
 #define MIN(a,b) a<=b?a:b
-extern Node* root;
-extern int error_flag;
-//char errorMsg[30];
-//void print_errorMsg(char msg[]);
+char currentStr[200];
+Node root;
+int errorNum;
 void yyerror(char* msg);
-extern char currentStr[];
+
 %}
 
 %union{
-	Node* type_node;
+	Node type_node;
 	int type_int;
 }
 
@@ -80,9 +79,7 @@ ExtDef : Specifier ExtDecList SEMI {
 		$2->siblings = $3;
 	}
 | Specifier error SEMI{
-		error_flag=1;
-		//strcpy(errorMsg,"before \";\"");
-		//print_errorMsg(errorMsg);
+		errorNum++;
 	}
 ;
 ExtDecList : VarDec {
@@ -162,9 +159,7 @@ FunDec : ID LP VarList RP {
 		$2->siblings = $3;
 	}
 | error RP {
-		error_flag=1;
-		//strcpy(errorMsg,"before \")\"");
-		//print_errorMsg(errorMsg);
+		errorNum++;
 	}
 ;
 VarList : ParamDec COMMA VarList {
@@ -194,9 +189,7 @@ CompSt : LC DefList StmtList RC {
 		$3->siblings = $4;
 	}
 | error RC {
-		error_flag=1;
-		//strcpy(errorMsg,"before \"}\"");
-		//print_errorMsg(errorMsg);
+		errorNum++;
 	}
 ;
 StmtList : Stmt StmtList {
@@ -250,14 +243,10 @@ Stmt : Exp SEMI {
 		$4->siblings = $5;
 	}
 | error SEMI {
-		error_flag=1;
-		//strcpy(errorMsg,"before \";\"");
-		//print_errorMsg(errorMsg);
+		errorNum++;
 	}
 | error RP {
-		error_flag=1;
-		//strcpy(errorMsg,"before \")\"");
-		//print_errorMsg(errorMsg);
+		errorNum++;
 	}
 ;
 
@@ -278,9 +267,7 @@ Def : Specifier DecList SEMI {
 		$2->siblings = $3;
 	}
 | Specifier error SEMI {
-		error_flag=1;
-		//strcpy(errorMsg,"before \";\"");
-		//print_errorMsg(errorMsg);
+		errorNum++;
 	}
 ;
 DecList : Dec {
@@ -410,9 +397,7 @@ Exp : Exp ASSIGNOP Exp {
 		$$->children = $1;
 	}
 | Exp LB error RB {
-		error_flag=1;
-		//strcpy(errorMsg,"between \"[\" and \"]\"");
-		//print_errorMsg(errorMsg);		
+		errorNum++;
 }
 ;
 
@@ -432,14 +417,3 @@ Args : Exp COMMA Args {
 void yyerror(char* msg){
 		fprintf(stderr,"Error type B at Line %d: syntax error, near \"%s\"\n",yylineno,currentStr);
 }
-/*
-void print_errorMsg(char msg[]){
-	if(msg[0]!='\0'){
-		fprintf(ssyntax error, %s\n",yylineno,msg);
-		msg[0]='\0';
-	}
-	else
-		fprintf(stderr,"Error type B at Line %d: syntax error\n",yylineno);
-	return;
-}
-*/

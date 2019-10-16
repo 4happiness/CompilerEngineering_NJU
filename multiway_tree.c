@@ -1,5 +1,8 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include "multiway_tree.h"
-void printTree_pre(Node* root, int count){
+void traverseTree_DLR(Node root, int count){
 	if(root==NULL)
 		return;
 	switch(root->node_type){
@@ -25,14 +28,17 @@ void printTree_pre(Node* root, int count){
 			break;
 		default:
 			break;
-	}
-	printTree_pre(root->children, count+2);
-	printTree_pre(root->siblings, count);
+	}	
+
+
+
+	traverseTree_DLR(root->children, count+2);
+	traverseTree_DLR(root->siblings, count);
 	return;
 }
 
-Node* createNode(char* name, char* value, int type, int row){
-	Node* newNode = (Node*)malloc(sizeof(Node));
+Node createNode(char* name, char* value, int type, int row){
+	Node newNode = (Node)malloc(sizeof(struct Node_));
 	strcpy(newNode->node_name, name);
 	strcpy(newNode->node_value, value);
 	newNode->node_type = type;
@@ -42,7 +48,7 @@ Node* createNode(char* name, char* value, int type, int row){
 	return newNode;
 }
 
-void deleteTree(Node* root){
+void deleteTree(Node root){
 	if(root==NULL)
 		return;
 	deleteTree(root->children);

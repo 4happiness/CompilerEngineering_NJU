@@ -1,21 +1,19 @@
 #ifndef __MULTIWAY_TREE_H__
 #define __MULTIWAY_TREE_H__
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+typedef struct Node_* Node;
 
-typedef struct Node_t{
+struct Node_{
 	int row;
 	int node_type;
 	char node_name[20];
 	char node_value[33];
-	struct Node_t* siblings;
-	struct Node_t* children;	
-}Node;
+	struct Node_* siblings;
+	struct Node_* children;	
+};
 
-void printTree_pre(Node* root, int count);
-Node* createNode(char*, char*, int, int);
-void deleteTree(Node*);
+void traverseTree_DLR(Node root, int count);
+Node createNode(char*, char*, int, int);
+void deleteTree(Node);
 
 #endif
