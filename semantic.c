@@ -1,11 +1,14 @@
 #include "common.h"
 #include "semantic.h"
 #include "multiway_tree.h"
+#include "attribute.h"
 #define SYMTAB_NR 0x3fff
 
 static SymtabNode* hashTable;
 static SymtabNode symStack;
 
+static void push2Stack();
+static void popStack();
 unsigned int hash_pjw(char*);
 void freeType(Type);
 void freeFieldList(FieldList);
@@ -42,14 +45,9 @@ void semanticAnalysis(Node root){
     char node_name[50];
     strcpy(node_name,root->node_name);
     if(!strcmp(node_name,"Program")){
-        SymtabNode newNode = (SymtabNode)malloc(sizeof(struct SymtabNode_));
-        newNode->symbol=NULL;
-        newNode->link.next_inStack=NULL;
-        newNode->link.next_inTable=NULL;
-        newNode->link.bottom=symStack;
-        symStack=newNode;
+        push2Stack();
         semanticAnalysis(root->children);
-
+        popStack();
 #ifdef DEBUGING
         if(root->siblings!=NULL)
             printf("Program error!\n");
@@ -177,4 +175,30 @@ void freeSymbol(Symbol symbol){
 void freeSymtabNode(SymtabNode node){
     freeSymbol(node->symbol);
     free(node);
+}
+static void push2Stack(){
+    SymtabNode newNode = (SymtabNode)malloc(sizeof(struct SymtabNode_));
+    newNode->symbol=NULL;
+    newNode->link.next_inStack=NULL;
+    newNode->link.next_inTable=NULL;
+    newNode->link.bottom=symStack;
+    symStack=newNode;
+}
+
+static void popStack(){
+    SymtabNode current;
+    while(symStack->link.next_inStack!=NULL){
+        current = symStack->link.next_inStack;
+        symStack->link.next_inStack=current->link.next_inStack;
+        unsigned int hash = hash_pjw(current->symbol->name);
+#ifdef DEBUGING
+    if(hashTable[hash]->link.next_inTable!=current)
+        printf("popStack(),address error\n");
+#endif
+        hashTable[hash]->link.next_inTable = current->link.next_inTable;
+        freeSymtabNode(current);
+    }
+    current = symStack;
+    symStack = current->link.bottom;
+    freeSymtabNode(current);
 }
