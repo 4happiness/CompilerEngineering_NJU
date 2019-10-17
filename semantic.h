@@ -1,5 +1,9 @@
+
+#include "multiway_tree.h"
+
 #ifndef __SEMANTIC_H__
-#define __SEMANTIC_H__
+#define __SEMANTIC_H_
+
 
 typedef struct Type_* Type;
 typedef struct FieldList_* FieldList;
@@ -12,7 +16,7 @@ struct Type_ {
     union
     {
         // 基本类型
-        int basic;
+        enum {INT,FLOAT} basic;
         // 数组类型信息包括元素类型与数组大小构成
         struct 
         {
@@ -25,7 +29,7 @@ struct Type_ {
 };
 
 struct FieldList_{
-    char name[33];
+    char name[50];
     Type type;
     FieldList tail;
 };
@@ -39,7 +43,7 @@ struct Function_
 
 struct Symbol_{
     enum {VARIABLE,FUNCTION} kind;
-    char name[33];
+    char name[50];
     union
     {
         Type varible;
@@ -52,9 +56,12 @@ struct SymtabNode_{
     struct
     {
         SymtabNode next_inStack;
+        SymtabNode bottom;
         SymtabNode next_inTable;
     }link;
 };
 
 extern void initSymtab();
+extern void freeSymtab();
+extern void semanticAnalysis(Node);
 #endif

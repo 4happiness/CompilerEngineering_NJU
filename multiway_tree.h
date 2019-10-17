@@ -6,8 +6,8 @@ typedef struct Node_* Node;
 struct Node_{
 	int row;
 	int node_type;
-	char node_name[20];
-	char node_value[33];
+	char node_name[50];
+	char node_value[50];
 	struct Node_* siblings;
 	struct Node_* children;	
 };

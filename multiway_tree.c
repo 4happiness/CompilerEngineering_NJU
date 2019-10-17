@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#include "common.h"
 #include "multiway_tree.h"
 void traverseTree_DLR(Node root, int count){
 	if(root==NULL)

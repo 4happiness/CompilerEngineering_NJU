@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "common.h"
 #include "multiway_tree.h"
 #include "semantic.h"
 
@@ -19,12 +18,15 @@ int main(int argc, char** argv){
 	}
 	yylineno=1;
 	errorNum=0;
+	root=NULL;
 	yyrestart(f);
-	//yyparse();
+	yyparse();
 	if(!errorNum){
 		initSymtab();
-		//traverseTree_DLR(root,0);
-		//deleteTree(root);
+		traverseTree_DLR(root,0);
+		semanticAnalysis(root);
+		freeSymtab();
+		deleteTree(root);
 	}
 	return 0;
 }
