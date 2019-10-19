@@ -1,6 +1,7 @@
 #include "common.h"
 #include "multiway_tree.h"
 #include "semantic.h"
+#include "symtab.h"
 
 extern int yylineno;
 extern int errorNum;

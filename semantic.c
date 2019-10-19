@@ -1,43 +1,9 @@
 #include "common.h"
 #include "semantic.h"
 #include "multiway_tree.h"
-#include "attribute.h"
-#define SYMTAB_NR 0x3fff
+#include "symtab.h"
+#include "parseProduction.h"
 
-static SymtabNode* hashTable;
-static SymtabNode symStack;
-
-static void push2Stack();
-static void popStack();
-unsigned int hash_pjw(char*);
-void freeType(Type);
-void freeFieldList(FieldList);
-void freeFunction(Function);
-void freeSymbol(Symbol);
-void freeSymtabNode(SymtabNode node);
-
-void initSymtab(){
-    hashTable = (SymtabNode*)malloc(SYMTAB_NR*sizeof(SymtabNode));
-    symStack = (SymtabNode)malloc(sizeof(struct SymtabNode_));
-    for(int i=0;i<SYMTAB_NR;i++){
-        hashTable[i]=(SymtabNode)malloc(sizeof(struct SymtabNode_));
-        hashTable[i]->symbol=NULL;
-        hashTable[i]->link.next_inStack=NULL;
-        hashTable[i]->link.bottom=NULL;
-        hashTable[i]->link.next_inTable=NULL;
-    }
-    symStack->symbol=NULL;
-    symStack->link.next_inStack=NULL;
-    symStack->link.next_inTable=NULL;
-    symStack->link.bottom=NULL;
-}
-
-void freeSymtab(){
-    for(int i=0;i<SYMTAB_NR;i++){
-        free(hashTable[i]);
-    }
-    free(symStack);
-}
 
 void semanticAnalysis(Node root){
     if(root==NULL)
@@ -58,147 +24,80 @@ void semanticAnalysis(Node root){
         if(!strcmp(Specifier->siblings->node_name,"ExtDecList")){
             Node ExtDecList = Specifier->siblings;
             Node VarDec = ExtDecList->children;
-            Node ID = VarDec->children;
+            Type type = parseSpecifier(Specifier);
             while(1){
-                while(ID->children!=NULL)
-                    ID = ID->children;
-
-                /* Symbol part not done */
-                
-                SymtabNode newNode = (SymtabNode)malloc(sizeof(struct SymtabNode_));
-                newNode->link.bottom = NULL;
-                newNode->link.next_inStack = symStack->link.next_inStack;
-                symStack->link.next_inStack = newNode;
-                unsigned int hash = hash_pjw(ID->node_value);
-                newNode->link.next_inTable = hashTable[hash]->link.next_inTable;
-                hashTable[hash]->link.next_inTable=newNode;
-
+                Symbol symbol = parseVarDec_toSymbol(VarDec,typecpy(type));
+                if(UNOCCUPIED == checkDefinition(symbol->name,VARIABLE))
+                    addSymbol(symbol);
+                else{
+                    printf("Error type 3 at Line %d: Redefined variable\"%s\"\n",VarDec->row,symbol->name);
+                    freeSymbol(symbol);
+                }     
                 if(VarDec->siblings==NULL)
                     break;
                 ExtDecList=VarDec->siblings->siblings;
                 VarDec=ExtDecList->children;
             }
-                
-            
-
+            freeType(type);
         }
         else if(!strcmp(Specifier->siblings->node_name,"FunDec")){
             Node FunDec = Specifier->siblings;
             Node CompSt = FunDec->siblings;
+            Node ID = FunDec->children;
+            Node VarList = ID->siblings->siblings;
+            Type type = parseSpecifier(Specifier);
+            Symbol symbol = (Symbol)malloc(sizeof(struct Symbol_));
+            Symbol* paramSymbols = NULL;
+            symbol->kind = FUNCTION;
+            strcpy(symbol->name,ID->node_value);
+            symbol->u.func = (Function)malloc(sizeof(struct Function_));
+            symbol->u.func->retType = type;
+            if(!strcmp(VarList->node_name,"VarList")){
+                paramSymbols = parseVarList_toSymbols(VarList);
+                int num = parseVarList_toNum(VarList);
+                symbol->u.func->varNum = num;
+                symbol->u.func->varTypes = (Type*)malloc(num*sizeof(Type));
+                for(int i=0;i<num;i++)
+                    symbol->u.func->varTypes[i] = typecpy(paramSymbols[i]->u.type);
+            }
+            else{
+                symbol->u.func->varNum = 0;
+                symbol->u.func->varTypes = NULL;
+            }
 
+            int num = symbol->u.func->varNum;
+
+            if(UNOCCUPIED == checkDefinition(symbol->name,FUNCTION))
+                addSymbol(symbol);
+            else{
+                printf("Error type 4 at Line %d: Redefined function\"%s\"\n",ID->row,ID->node_value);
+                freeSymbol(symbol);
+            }
+            push2Stack();
+            
+            for(int i=0;i<num;i++)
+                addSymbol(paramSymbols[i]);
+            semanticAnalysis(CompSt->children);
+            popStack();
         }
+        else{
+            Type type = parseSpecifier(Specifier);
+            freeType(type);
+            type = NULL;
+        }
+        semanticAnalysis(root->siblings);
     }
     else if(!strcmp(node_name,"Def")){
         printf("Def\n");
+    }
+    else if(!strcmp(node_name,"CompSt")){
+        push2Stack();
+        semanticAnalysis(root->children);
+        popStack();
+        semanticAnalysis(root->siblings);
     }
     else{
         semanticAnalysis(root->children);
         semanticAnalysis(root->siblings);
     }
-}
-
-
-
-
-unsigned int hash_pjw(char* name){
-    unsigned int val=0,i;
-    for(;*name;++name){
-        val = (val << 2) + *name;
-        if(i = val & ~SYMTAB_NR)
-            val = (val ^ (i >> 12)) & 0x3fff;
-    }
-    return val;
-}
-
-void freeType(Type type){
-    if(type==NULL)
-        return;
-
-    switch (type->kind)
-    {
-    case BASIC:
-        break;
-
-    case ARRAY:
-        freeType(type->u.array.elem);
-        break;
-
-    case STRUCTURE:
-        freeFieldList(type->u.structure);
-        break;
-
-    default:
-        break;
-    }
-    free(type);
-}
-
-void freeFieldList(FieldList fieldlist){
-    if(fieldlist==NULL)
-        return;
-    
-    freeType(fieldlist->type);
-    freeFieldList(fieldlist->tail);
-    free(fieldlist);
-}
-
-void freeFunction(Function function){
-    if(function==NULL)
-        return;
-    
-    freeType(function->retType);
-    for(int i=0;i<function->varNum;i++)
-        freeType(function->varTypes[i]);
-    return;
-}
-
-void freeSymbol(Symbol symbol){
-    if(symbol==NULL)
-        return;
-    
-    switch (symbol->kind)
-    {
-    case VARIABLE:
-        freeType(symbol->u.varible);
-        break;
-    
-    case FUNCTION:
-        freeFunction(symbol->u.func);
-        break;
-
-    default:
-        break;
-    }
-    free(symbol);
-}
-
-void freeSymtabNode(SymtabNode node){
-    freeSymbol(node->symbol);
-    free(node);
-}
-static void push2Stack(){
-    SymtabNode newNode = (SymtabNode)malloc(sizeof(struct SymtabNode_));
-    newNode->symbol=NULL;
-    newNode->link.next_inStack=NULL;
-    newNode->link.next_inTable=NULL;
-    newNode->link.bottom=symStack;
-    symStack=newNode;
-}
-
-static void popStack(){
-    SymtabNode current;
-    while(symStack->link.next_inStack!=NULL){
-        current = symStack->link.next_inStack;
-        symStack->link.next_inStack=current->link.next_inStack;
-        unsigned int hash = hash_pjw(current->symbol->name);
-#ifdef DEBUGING
-    if(hashTable[hash]->link.next_inTable!=current)
-        printf("popStack(),address error\n");
-#endif
-        hashTable[hash]->link.next_inTable = current->link.next_inTable;
-        freeSymtabNode(current);
-    }
-    current = symStack;
-    symStack = current->link.bottom;
-    freeSymtabNode(current);
 }
