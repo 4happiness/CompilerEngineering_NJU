@@ -78,6 +78,12 @@ ExtDef : Specifier ExtDecList SEMI {
 		$1->siblings = $2;
 		$2->siblings = $3;
 	}
+| Specifier FunDec SEMI {
+		$$ = createNode("ExtDef","",0,$1->row);
+		$$->children = $1;
+		$1->siblings = $2;
+		$2->siblings = $3;
+	}
 | Specifier error SEMI{
 		errorNum++;
 	}

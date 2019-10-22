@@ -23,10 +23,8 @@ int main(int argc, char** argv){
 	yyrestart(f);
 	yyparse();
 	if(!errorNum){
-		initSymtab();
-		traverseTree_DLR(root,0);
+		//traverseTree_DLR(root,0);
 		semanticAnalysis(root);
-		freeSymtab();
 		deleteTree(root);
 	}
 	return 0;

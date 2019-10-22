@@ -1,6 +1,7 @@
 #ifndef __SYMTAB_H__
 #define __SYMTAB_H__
 enum {UNOCCUPIED,EXISTING,CONFLICT};
+enum {SUCCESS,FAILURE};
 
 typedef struct Type_* Type;
 typedef struct FieldList_* FieldList;
@@ -50,19 +51,12 @@ struct Symbol_{
 
 struct SymtabNode_{
     Symbol symbol;
-    struct
-    {
-        SymtabNode next_inStack;
-        SymtabNode bottom;
-        SymtabNode next_inTable;
-    }link;
+    SymtabNode next;
 };
 
 unsigned int hash_pjw(const char*);
 void initSymtab();
 void freeSymtab();
-void push2Stack();
-void popStack();
 void addSymbol(Symbol);
 void freeType(Type);
 void freeFieldList(FieldList);
@@ -71,8 +65,10 @@ void freeFunction(Function);
 void freeSymtabNode(SymtabNode);
 int checkDefinition(const char*,const int);
 Type getType(const char*,const int);
-Type typecpy(Type);
-FieldList fieldlistcpy(FieldList);
-
+int typecpy(Type,Type);
+int typecmp(Type, Type);
+int fieldlistcpy(FieldList, FieldList);
+int fieldlistcmp(FieldList, FieldList);
+Symbol getSymbol(const char*, const int);
 
 #endif

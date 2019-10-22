@@ -2,11 +2,7 @@
 #include "symtab.h"
 #define SYMTAB_NR 0x3fff
 
-static SymtabNode* hashTable;
-static SymtabNode symbolStack;
-
-static void initHashTable();
-static void initSymbolStack();
+static SymtabNode* symtab;
 
 
 unsigned int hash_pjw(const char* name){
@@ -20,74 +16,27 @@ unsigned int hash_pjw(const char* name){
 }
 
 void initSymtab(){
-    initHashTable();
-    initSymbolStack();
-}
-
-static void initHashTable(){
-    hashTable = (SymtabNode*)malloc(SYMTAB_NR*sizeof(SymtabNode));
+    symtab = (SymtabNode*)malloc(SYMTAB_NR*sizeof(SymtabNode));
     for(int i=0;i<SYMTAB_NR;i++){
-        hashTable[i]=(SymtabNode)malloc(sizeof(struct SymtabNode_));
-        hashTable[i]->symbol=NULL;
-        hashTable[i]->link.next_inStack=NULL;
-        hashTable[i]->link.bottom=NULL;
-        hashTable[i]->link.next_inTable=NULL;
+        symtab[i]=(SymtabNode)malloc(sizeof(struct SymtabNode_));
+        symtab[i]->symbol=NULL;
+        symtab[i]->next=NULL;
     }
-}
-
-static void initSymbolStack(){
-    symbolStack = (SymtabNode)malloc(sizeof(struct SymtabNode_));
-    symbolStack->symbol=NULL;
-    symbolStack->link.next_inStack=NULL;
-    symbolStack->link.next_inTable=NULL;
-    symbolStack->link.bottom=NULL;
 }
 
 void freeSymtab(){
-    for(int i=0;i<SYMTAB_NR;i++){
-        free(hashTable[i]);
-        hashTable[i]=NULL;
-    }
-    free(hashTable);
-    free(symbolStack);
+    for(int i=0;i<SYMTAB_NR;i++)
+        freeSymtabNode(symtab[i]);
+    free(symtab);
 }
 
-void push2Stack(){
-    SymtabNode node = (SymtabNode)malloc(sizeof(struct SymtabNode_));
-    node->symbol = NULL;
-    node->link.next_inStack = NULL;
-    node->link.next_inTable = NULL;
-    node->link.bottom = symbolStack;
-    symbolStack = node;
-}
-
-void popStack(){
-    SymtabNode current;
-    while(symbolStack->link.next_inStack!=NULL){
-        current = symbolStack->link.next_inStack;
-        symbolStack->link.next_inStack=current->link.next_inStack;
-        unsigned int hash_code = hash_pjw(current->symbol->name);
-#ifdef DEBUGING
-    if(hashTable[hash_code]->link.next_inTable!=current)
-        printf("popStack(),address error\n");
-#endif
-        hashTable[hash_code]->link.next_inTable = current->link.next_inTable;
-        freeSymtabNode(current);
-    }
-    current = symbolStack;
-    symbolStack = current->link.bottom;
-    freeSymtabNode(current);
-}
 
 void addSymbol(Symbol symbol){
     SymtabNode node = (SymtabNode)malloc(sizeof(struct SymtabNode_));
     node->symbol = symbol;
-    node->link.next_inStack = symbolStack->link.next_inStack;
-    symbolStack->link.next_inStack = node;
     unsigned int hash_code = hash_pjw(symbol->name);
-    node->link.next_inTable = hashTable[hash_code]->link.next_inTable;
-    hashTable[hash_code]->link.next_inTable = node;
-    node->link.bottom = NULL;
+    node->next = symtab[hash_code]->next;
+    symtab[hash_code]->next = node;
 }
 
 void freeType(Type type){
@@ -120,10 +69,12 @@ void freeFieldList(FieldList fieldlist){
     if(fieldlist==NULL)
         return;
     
-    freeFieldList(fieldlist->tail);
-    fieldlist->tail = NULL;
     freeType(fieldlist->type);
     fieldlist->type = NULL;
+
+    freeFieldList(fieldlist->tail);
+    fieldlist->tail = NULL;
+    
     free(fieldlist);
     return;
 }
@@ -134,12 +85,15 @@ void freeFunction(Function function){
     
     freeType(function->retType);
     function->retType = NULL;
+
     for(int i=0;i<function->varNum;i++){
         freeType(function->varTypes[i]);
         function->varTypes[i] = NULL;
     }
+
     free(function->varTypes);
     function->varTypes = NULL;
+
     free(function);
     return;
 }
@@ -168,23 +122,43 @@ void freeSymbol(Symbol symbol){
 }
 
 void freeSymtabNode(SymtabNode node){
+    if(node->next!=NULL)
+        freeSymtabNode(node->next);
+
     freeSymbol(node->symbol);
     node->symbol = NULL;
+
     free(node);
 }
 
 int checkDefinition(const char* name,const int kind){
     SymtabNode node;
     Symbol symbol;
-    node = symbolStack;
-    while(node->link.next_inStack!=NULL){
-        node = node->link.next_inStack;
+    unsigned int hash_code = hash_pjw(name);
+    node = symtab[hash_code];
+    while(node->next!=NULL){
+        node = node->next;
         symbol = node->symbol;
         if(!strcmp(name,symbol->name)){
             if(kind == symbol->kind)
                 return EXISTING;
-            else
-                return CONFLICT;
+            else{
+                switch (kind)
+                {
+                case VARIABLE:
+                    if(symbol->kind == STRUCTNAME)
+                        return CONFLICT;
+                    break;
+
+                case STRUCTNAME:
+                    if(symbol->kind == VARIABLE)
+                        return CONFLICT;
+                    break;
+
+                default:
+                    break;
+                }
+            }
         }
     }
     return UNOCCUPIED;
@@ -194,39 +168,44 @@ int checkDefinition(const char* name,const int kind){
 Type getType(const char* name,const int kind){
     SymtabNode node;
     Symbol symbol;
-    unsigned int hash_code;
-    hash_code = hash_pjw(name);
-    node = hashTable[hash_code];
-    while(node->link.next_inTable!=NULL){
-        node = node->link.next_inTable;
+    unsigned int hash_code = hash_pjw(name);
+    node = symtab[hash_code];
+    while(node->next!=NULL){
+        node = node->next;
         symbol = node->symbol;
-        if(kind == symbol->kind){
-            if(!strcmp(name,symbol->name)){
-                switch (kind)
-                {
-                case VARIABLE:
-                case STRUCTNAME:
-                    return symbol->u.type;
-                    break;
+        if(kind == symbol->kind && !strcmp(name,symbol->name)){
+            switch (kind)
+            {
+            case VARIABLE:
+            case STRUCTNAME:
+                return symbol->u.type;
+                break;
 
-                default:
+            case FUNCTION:
+                return symbol->u.func->retType;
+                break;
+
+            default:
 #ifdef DEBUGING
-                    printf("getType(),error kind.\n");
+                printf("getType(),error kind.\n");
 #endif
-                    return NULL;
-                    break;
-                }
+                return NULL;
+                break;
             }
         }
     }
     return NULL;
 }
 
-Type typecpy(Type src){
-    if (src == NULL)
-        return NULL;
+int typecpy(Type dest, Type src){
+    if (src == NULL){
+#ifdef DEBUING
+    printf("error typecpy().\n");
+#endif
+        return FAILURE;
+    }
+        
     else{
-        Type dest = (Type)malloc(sizeof(struct Type_));
         dest->kind = src->kind;
         switch (src->kind)
         {
@@ -235,27 +214,102 @@ Type typecpy(Type src){
             break;
         
         case ARRAY:
-            dest->u.array.elem = typecpy(src->u.array.elem);
+            dest->u.array.elem = (Type)malloc(sizeof(struct Type_));
+            if(FAILURE == typecpy(dest->u.array.elem,src->u.array.elem)){
+                freeType(dest->u.array.elem);
+                return FAILURE;
+            }
             dest->u.array.size = src->u.array.size;
             break;
 
         case STRUCTURE:
-            dest->u.structure = fieldlistcpy(src->u.structure);
+            if(src->u.structure == NULL)
+                dest->u.structure = NULL;
+            else{
+                dest->u.structure = (FieldList)malloc(sizeof(struct FieldList_));
+                fieldlistcpy(dest->u.structure, src->u.structure);
+            }
             break;
     
         default:
             break;
         }
-        return dest;
+        return SUCCESS;
     }
 }
 
-FieldList fieldlistcpy(FieldList src){
+int typecmp(Type dest, Type src){
+    if(dest==NULL || src==NULL)
+        return FAILURE;
+    if(dest->kind != src->kind)
+        return FAILURE;
+    switch (dest->kind)
+    {
+    case BASIC:
+        if (dest->u.basic == src->u.basic)
+            return SUCCESS;
+        else
+            return FAILURE;
+        break;
+    
+    case ARRAY:
+        return typecmp(dest->u.array.elem,src->u.array.elem);
+        break;
+    
+    case STRUCTURE:
+        return fieldlistcmp(dest->u.structure,src->u.structure);
+        break;
+
+    default:
+        break;
+    }
+}
+
+int fieldlistcpy(FieldList dest, FieldList src){
+#ifdef DEBUGING
     if(src == NULL)
-        return NULL;
-    FieldList dest = (FieldList)malloc(sizeof(struct FieldList_));
+        printf("error fieldlistcpy().\n");
+#endif
+    if(src->tail!=NULL){
+        dest->tail = (FieldList)malloc(sizeof(struct FieldList_));
+        fieldlistcpy(dest->tail,src->tail);
+    }
+    else{
+        dest->tail=NULL;
+    }
     strcpy(dest->name,src->name);
-    dest->type = typecpy(src->type);
-    dest->tail = fieldlistcpy(src->tail);
-    return dest;
+    dest->type = (Type)malloc(sizeof(struct Type_));
+    typecpy(dest->type,src->type);
+    return SUCCESS;
+}
+
+int fieldlistcmp(FieldList dest, FieldList src){
+    if(dest == NULL && src!=NULL)
+        return FAILURE;
+    else if(dest != NULL && src==NULL)
+        return FAILURE;
+    else{
+        int flag_1 = typecmp(dest->type, src->type);
+        if(flag_1 == FAILURE)
+            return FAILURE;
+        int flag_2 = SUCCESS;
+        if(dest->tail!=NULL || src->tail!=NULL)
+            flag_2 = fieldlistcmp(dest->tail,src->tail);
+        return flag_1|flag_2;
+    }
+    
+}
+
+Symbol getSymbol(const char* name, const int kind){
+    SymtabNode node;
+    Symbol symbol;
+    unsigned int hash_code = hash_pjw(name);
+    node = symtab[hash_code];
+    while(node->next!=NULL){
+        node = node->next;
+        symbol = node->symbol;
+        if(kind == symbol->kind && !strcmp(name,symbol->name))
+            return symbol;
+    }
+    return NULL;
 }
