@@ -9,7 +9,6 @@ static Type parseStructSpecifier(const Node);
 static FieldList parseDefList_toFieldList(const Node);
 static int checkLvalue(Node);
 static void printArgs(Node);
-static void printExp(Node);
 static void printFuncParams(Function);
 
 
@@ -366,12 +365,9 @@ Type TypeOfExp(Node node){
                 printf("Error type 6 at Line %d: The left-hand side of an assignment must be a variable.\n",node->children->siblings->row);
                 return type_2;
             }
-            
-            if(type_1 == NULL)
-                return type_2;
-            if(type_2 == NULL)
-                return type_1;
-
+            if(type_1 == NULL || type_2 == NULL)
+                return NULL;
+        
             if(SUCCESS == typecmp(type_1,type_2))
                 return type_1;
             else{
@@ -383,15 +379,14 @@ Type TypeOfExp(Node node){
             Type type_1 = TypeOfExp(node->children);
             Type type_2 = TypeOfExp(node->children->siblings->siblings);
             if(type_1==NULL || type_2==NULL){
-                printf("Error type 7 at Line %d: Type mismatched fot operands.\n",node->children->siblings->row);
                 return NULL;
             }
             if(type_1->kind!=BASIC || type_2->kind!=BASIC){
-                printf("Error type 7 at Line %d: Type mismatched fot operands.\n",node->children->siblings->row);
+                printf("Error type 7 at Line %d: Type mismatched fot operands \"&&\".\n",node->children->siblings->row);
                 return NULL;
             }
             if(type_1->u.basic!=INT || type_2->u.basic!=INT){
-                printf("Error type 7 at Line %d: Type mismatched fot operands.\n",node->children->siblings->row);
+                printf("Error type 7 at Line %d: Type mismatched fot operands \"&&\".\n",node->children->siblings->row);
                 return NULL;
             }
             return type_1;
@@ -400,15 +395,14 @@ Type TypeOfExp(Node node){
             Type type_1 = TypeOfExp(node->children);
             Type type_2 = TypeOfExp(node->children->siblings->siblings);
             if(type_1==NULL || type_2==NULL){
-                printf("Error type 7 at Line %d: Type mismatched fot operands.\n",node->children->siblings->row);
                 return NULL;
             }
             if(type_1->kind!=BASIC || type_2->kind!=BASIC){
-                printf("Error type 7 at Line %d: Type mismatched fot operands.\n",node->children->siblings->row);
+                printf("Error type 7 at Line %d: Type mismatched fot operands \"||\".\n",node->children->siblings->row);
                 return NULL;
             }
             if(type_1->u.basic!=INT || type_2->u.basic!=INT){
-                printf("Error type 7 at Line %d: Type mismatched fot operands.\n",node->children->siblings->row);
+                printf("Error type 7 at Line %d: Type mismatched fot operands \"||\".\n",node->children->siblings->row);
                 return NULL;
             }
             return type_1;
@@ -417,15 +411,14 @@ Type TypeOfExp(Node node){
             Type type_1 = TypeOfExp(node->children);
             Type type_2 = TypeOfExp(node->children->siblings->siblings);
             if(type_1==NULL || type_2==NULL){
-                printf("Error type 7 at Line %d: Type mismatched fot operands.\n",node->children->siblings->row);
                 return NULL;
             }
             if(type_1->kind!=BASIC || type_2->kind!=BASIC){
-                printf("Error type 7 at Line %d: Type mismatched fot operands.\n",node->children->siblings->row);
+                printf("Error type 7 at Line %d: Type mismatched fot operands \"%s\".\n",node->children->siblings->row,node->children->siblings->node_value);
                 return NULL;
             }
             if(type_1->u.basic!=type_2->u.basic){
-                printf("Error type 7 at Line %d: Type mismatched fot operands.\n",node->children->siblings->row);
+                printf("Error type 7 at Line %d: Type mismatched fot operands \"%s\".\n",node->children->siblings->row,node->children->siblings->node_value);
                 return NULL;
             }
             Type type = (Type)malloc(sizeof(struct Type_));
@@ -436,16 +429,15 @@ Type TypeOfExp(Node node){
         else if(!strcmp(node->children->siblings->node_name,"PLUS")){
             Type type_1 = TypeOfExp(node->children);
             Type type_2 = TypeOfExp(node->children->siblings->siblings);
-            if(type_1 == NULL){
-                printf("Error type 7 at Line %d: Type mismatched fot operands.\n",node->children->siblings->row);
+            if(type_1 == NULL || type_2 == NULL){
                 return NULL;
             }
             if(type_1->kind!=BASIC){
-                printf("Error type 7 at Line %d: Type mismatched fot operands.\n",node->children->siblings->row);
+                printf("Error type 7 at Line %d: Type mismatched fot operands \"+\".\n",node->children->siblings->row);
                 return NULL;
             }
             if(FAILURE == typecmp(type_1,type_2)){
-                printf("Error type 7 at Line %d: Type mismatched fot operands.\n",node->children->siblings->row);
+                printf("Error type 7 at Line %d: Type mismatched fot operands \"+\".\n",node->children->siblings->row);
                 return NULL;
             }
             return type_1;
@@ -453,16 +445,15 @@ Type TypeOfExp(Node node){
         else if(!strcmp(node->children->siblings->node_name,"MINUS")){
             Type type_1 = TypeOfExp(node->children);
             Type type_2 = TypeOfExp(node->children->siblings->siblings);
-            if(type_1 == NULL){
-                printf("Error type 7 at Line %d: Type mismatched fot operands.\n",node->children->siblings->row);
+            if(type_1 == NULL || type_2 == NULL){
                 return NULL;
             }
             if(type_1->kind!=BASIC){
-                printf("Error type 7 at Line %d: Type mismatched fot operands.\n",node->children->siblings->row);
+                printf("Error type 7 at Line %d: Type mismatched fot operands \"-\".\n",node->children->siblings->row);
                 return NULL;
             }
             if(FAILURE == typecmp(type_1,type_2)){
-                printf("Error type 7 at Line %d: Type mismatched fot operands.\n",node->children->siblings->row);
+                printf("Error type 7 at Line %d: Type mismatched fot operands \"-\".\n",node->children->siblings->row);
                 return NULL;
             }
             return type_1;
@@ -470,16 +461,15 @@ Type TypeOfExp(Node node){
         else if(!strcmp(node->children->siblings->node_name,"STAR")){
             Type type_1 = TypeOfExp(node->children);
             Type type_2 = TypeOfExp(node->children->siblings->siblings);
-            if(type_1 == NULL){
-                printf("Error type 7 at Line %d: Type mismatched fot operands.\n",node->children->siblings->row);
+            if(type_1 == NULL || type_2 == NULL){
                 return NULL;
             }
             if(type_1->kind!=BASIC){
-                printf("Error type 7 at Line %d: Type mismatched fot operands.\n",node->children->siblings->row);
+                printf("Error type 7 at Line %d: Type mismatched fot operands \"*\".\n",node->children->siblings->row);
                 return NULL;
             }
             if(FAILURE == typecmp(type_1,type_2)){
-                printf("Error type 7 at Line %d: Type mismatched fot operands.\n",node->children->siblings->row);
+                printf("Error type 7 at Line %d: Type mismatched fot operands \"*\".\n",node->children->siblings->row);
                 return NULL;
             }
             return type_1;
@@ -487,16 +477,15 @@ Type TypeOfExp(Node node){
         else if(!strcmp(node->children->siblings->node_name,"DIV")){
             Type type_1 = TypeOfExp(node->children);
             Type type_2 = TypeOfExp(node->children->siblings->siblings);
-            if(type_1 == NULL){
-                printf("Error type 7 at Line %d: Type mismatched fot operands.\n",node->children->siblings->row);
+            if(type_1 == NULL || type_2 == NULL){
                 return NULL;
             }
             if(type_1->kind!=BASIC){
-                printf("Error type 7 at Line %d: Type mismatched fot operands.\n",node->children->siblings->row);
+                printf("Error type 7 at Line %d: Type mismatched fot operands \"/\".\n",node->children->siblings->row);
                 return NULL;
             }
             if(FAILURE == typecmp(type_1,type_2)){
-                printf("Error type 7 at Line %d: Type mismatched fot operands.\n",node->children->siblings->row);
+                printf("Error type 7 at Line %d: Type mismatched fot operands \"/\".\n",node->children->siblings->row);
                 return NULL;
             }
             return type_1;
@@ -506,17 +495,22 @@ Type TypeOfExp(Node node){
             Node Exp_2 = Exp_1->siblings->siblings;
             Type type_1 = TypeOfExp(Exp_1);
             Type type_2 = TypeOfExp(Exp_2);
+            if(type_1 == NULL)
+                return NULL;
             if(type_1->kind != ARRAY){
                 printf("Error type 10 at Line %d: \"",Exp_1->row);
                 printExp(Exp_1);
                 printf("\" is not an array.\n");
+                /*
                 if(type_2->kind != BASIC || type_2->u.basic!=INT){
                     printf("Error type 12 at Line %d: \"",Exp_2->row);
                     printExp(Exp_2);
                     printf("\" is not an integer.\n");
-                }
+                }*/
                 return NULL;
             }
+            if(type_2 == NULL)
+                return type_1->u.array.elem;
             if(type_2->kind == BASIC && type_2->u.basic==INT){
                 return type_1->u.array.elem;
             }
@@ -524,12 +518,15 @@ Type TypeOfExp(Node node){
                 printf("Error type 12 at Line %d: \"",Exp_2->row);
                 printExp(Exp_2);
                 printf("\" is not an integer.\n");
-                return NULL;
+                return type_1->u.array.elem;
             }
         }
         else if(!strcmp(node->children->siblings->node_name,"DOT")){
             Type type = TypeOfExp(node->children);
             Node ID = node->children->siblings->siblings;
+            if(type == NULL){
+                return NULL;
+            }
             if(type->kind!=STRUCTURE){
                 printf("Error type 13 at Line %d: Illegal use of \".\".\n",ID->row);
                 return NULL;
@@ -558,7 +555,6 @@ Type TypeOfExp(Node node){
     else if(!strcmp(node->children->node_name,"MINUS")){
         Type type = TypeOfExp(node->children->siblings);
         if(type == NULL){
-            printf("Error type 7 at Line %d: Type mismatched fot operands.\n",node->children->siblings->row);
             return NULL;
         }
         if(type->kind!=BASIC){
@@ -570,7 +566,6 @@ Type TypeOfExp(Node node){
     else if(!strcmp(node->children->node_name,"NOT")){
         Type type = TypeOfExp(node->children->siblings);
         if(type == NULL){
-            printf("Error type 7 at Line %d: Type mismatched fot operands.\n",node->children->siblings->row);
             return NULL;
         }
         if(type->kind!=BASIC){
@@ -622,7 +617,7 @@ Type TypeOfExp(Node node){
                             break;
                         }
                         if(Exp->siblings!=NULL)
-                            Exp = Exp->siblings->siblings;
+                            Exp = Exp->siblings->siblings->children;
                     }
                     if(flag==FAILURE){
                         printf("Error type 9 at Line %d: Function \"%s(",ID->row,ID->node_value);
@@ -685,7 +680,7 @@ static int checkLvalue(Node node){
         return FAILURE;
 }
 
-static void printExp(Node node){
+void printExp(Node node){
 #ifdef DEBUGING
     if(node == NULL){
         printf("printExp(),NULL ptr\n");
@@ -713,7 +708,7 @@ static void printExp(Node node){
         }
         else{
             Node Exp_1 = node->children;
-            Node Exp_2 = node->siblings->siblings;
+            Node Exp_2 = Exp_1->siblings->siblings;
             printExp(Exp_1);
             printf("%s",Exp_1->siblings->node_value);
             printExp(Exp_2);
@@ -806,5 +801,8 @@ static void printFuncParams(Function func){
         default:
             break;
         }
+        if(i<(param_num-1))
+            printf(",");
     }
+
 }

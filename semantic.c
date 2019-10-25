@@ -4,7 +4,7 @@
 #include "symtab.h"
 #include "parseProduction.h"
 
-static Symbol current_func;
+static Type current_func_type;
 void semanticAnalysis(Node root){
     if(root==NULL)
         return;
@@ -12,8 +12,10 @@ void semanticAnalysis(Node root){
     strcpy(node_name,root->node_name);
     if(!strcmp(node_name,"Program")){
         initSymtab();
+        current_func_type = (Type)malloc(sizeof(struct Type_));
         semanticAnalysis(root->children);
         freeSymtab();
+        freeType(current_func_type);
 #ifdef DEBUGING
         if(root->siblings!=NULL)
             printf("Program error!\n");
@@ -32,7 +34,7 @@ void semanticAnalysis(Node root){
                 if(UNOCCUPIED == checkDefinition(symbol->name,VARIABLE))
                     addSymbol(symbol);
                 else{
-                    printf("Error type 3 at Line %d: Redefined variable\"%s\"\n",VarDec->row,symbol->name);
+                    printf("Error type 3 at Line %d: Redefined variable\"%s\".\n",VarDec->row,symbol->name);
                     freeSymbol(symbol);
                 }     
                 if(VarDec->siblings==NULL)
@@ -95,14 +97,14 @@ void semanticAnalysis(Node root){
                     symbol->u.func->varNum = 0;
                     symbol->u.func->varTypes = NULL;
                 }
-
-                if(UNOCCUPIED == checkDefinition(symbol->name,FUNCTION)){
-                    current_func = symbol;
+                
+                typecpy(current_func_type,symbol->u.func->retType);
+                if(UNOCCUPIED == checkDefinition(symbol->name,FUNCTION)){  
                     addSymbol(symbol);
                 }
                 
                 else{
-                    printf("Error type 4 at Line %d: Redefined function \"%s\"\n",ID->row,ID->node_value);
+                    printf("Error type 4 at Line %d: Redefined function \"%s\".\n",ID->row,ID->node_value);
                     freeSymbol(symbol);
                 }
             
@@ -133,7 +135,8 @@ void semanticAnalysis(Node root){
                 symbol = parseVarDec_toSymbol(VarDec,baseType_2);
                 if(VarDec->siblings!=NULL){
                     Exp = VarDec->siblings->siblings;
-                    if(FAILURE == typecmp(symbol->u.type,TypeOfExp(Exp))){
+                    Type exp_type = TypeOfExp(Exp);
+                    if(FAILURE == typecmp(symbol->u.type,exp_type) && exp_type!=NULL){
                         printf("Error type 5 at Line %d: Type mismatched for assignment.\n",Exp->row);
                     }
                 }
@@ -157,6 +160,13 @@ void semanticAnalysis(Node root){
     }
     else if(!strcmp(node_name,"Stmt")){
         if(!strcmp(root->children->node_name,"Exp")){
+/*
+#ifdef DEBUGING
+            printExp(root->children);
+            printf("\n");
+#endif
+*/
+
             TypeOfExp(root->children);
         }
         else if(!strcmp(root->children->node_name,"CompSt")){
@@ -164,9 +174,8 @@ void semanticAnalysis(Node root){
         }
         else if(!strcmp(root->children->node_name,"RETURN")){
             Type retType = TypeOfExp(root->children->siblings);
-            //printf("%d,%d\n",retType->kind,current_func->u.func->retType->kind);
-            if(FAILURE == typecmp(retType,current_func->u.func->retType))
-                printf("Error type 8 at Line %d: Type mismatched for return.\n",root->row);    
+            if(FAILURE == typecmp(retType,current_func_type) && retType!=NULL)
+                printf("Error type 8 at Line %d: Type mismatched for return.\n",root->row);
         }
         else if(!strcmp(root->children->node_name,"IF")){
             
@@ -192,7 +201,9 @@ void semanticAnalysis(Node root){
             }
             semanticAnalysis(Stmt);
         }
-        semanticAnalysis(root->siblings);
+        if(root->siblings !=NULL)
+            if(strcmp("ELSE",root->siblings->node_name))
+                semanticAnalysis(root->siblings);
     }
     else{
         semanticAnalysis(root->children);

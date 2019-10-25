@@ -13,4 +13,5 @@ Symbol* parseVarList_toSymbols(Node);
 char* parseVarDec_toID(const Node);
 Type parseVarDec_toType(const Node, const Type);
 Type TypeOfExp(Node);
+void printExp(Node);
 #endif
