@@ -1,5 +1,5 @@
 %{
-#include "multiway_tree.h"
+#include "parseTree.h"
 #include "lex.yy.c"
 #define MIN(a,b) a<=b?a:b
 char currentStr[200];

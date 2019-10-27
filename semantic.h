@@ -1,5 +1,5 @@
 
-#include "multiway_tree.h"
+#include "parseTree.h"
 
 #ifndef __SEMANTIC_H__
 #define __SEMANTIC_H__

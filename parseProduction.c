@@ -1,6 +1,6 @@
 #include "symtab.h"
 #include "parseProduction.h"
-#include "multiway_tree.h"
+#include "parseTree.h"
 #include "common.h"
 
 static Type parseTYPE(const Node);

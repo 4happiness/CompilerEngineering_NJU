@@ -1,6 +1,6 @@
 #include "common.h"
 #include "semantic.h"
-#include "multiway_tree.h"
+#include "parseTree.h"
 #include "symtab.h"
 #include "parseProduction.h"
 

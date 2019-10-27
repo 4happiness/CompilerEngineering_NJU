@@ -1,5 +1,5 @@
 #include "common.h"
-#include "multiway_tree.h"
+#include "parseTree.h"
 #include "semantic.h"
 #include "symtab.h"
 
