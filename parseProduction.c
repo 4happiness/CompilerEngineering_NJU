@@ -382,11 +382,11 @@ Type TypeOfExp(Node node){
                 return NULL;
             }
             if(type_1->kind!=BASIC || type_2->kind!=BASIC){
-                printf("Error type 7 at Line %d: Type mismatched fot operands \"&&\".\n",node->children->siblings->row);
+                printf("Error type 7 at Line %d: Type mismatched for operands \"&&\".\n",node->children->siblings->row);
                 return NULL;
             }
             if(type_1->u.basic!=INT || type_2->u.basic!=INT){
-                printf("Error type 7 at Line %d: Type mismatched fot operands \"&&\".\n",node->children->siblings->row);
+                printf("Error type 7 at Line %d: Type mismatched for operands \"&&\".\n",node->children->siblings->row);
                 return NULL;
             }
             return type_1;
@@ -398,11 +398,11 @@ Type TypeOfExp(Node node){
                 return NULL;
             }
             if(type_1->kind!=BASIC || type_2->kind!=BASIC){
-                printf("Error type 7 at Line %d: Type mismatched fot operands \"||\".\n",node->children->siblings->row);
+                printf("Error type 7 at Line %d: Type mismatched for operands \"||\".\n",node->children->siblings->row);
                 return NULL;
             }
             if(type_1->u.basic!=INT || type_2->u.basic!=INT){
-                printf("Error type 7 at Line %d: Type mismatched fot operands \"||\".\n",node->children->siblings->row);
+                printf("Error type 7 at Line %d: Type mismatched for operands \"||\".\n",node->children->siblings->row);
                 return NULL;
             }
             return type_1;
@@ -414,11 +414,11 @@ Type TypeOfExp(Node node){
                 return NULL;
             }
             if(type_1->kind!=BASIC || type_2->kind!=BASIC){
-                printf("Error type 7 at Line %d: Type mismatched fot operands \"%s\".\n",node->children->siblings->row,node->children->siblings->node_value);
+                printf("Error type 7 at Line %d: Type mismatched for operands \"%s\".\n",node->children->siblings->row,node->children->siblings->node_value);
                 return NULL;
             }
             if(type_1->u.basic!=type_2->u.basic){
-                printf("Error type 7 at Line %d: Type mismatched fot operands \"%s\".\n",node->children->siblings->row,node->children->siblings->node_value);
+                printf("Error type 7 at Line %d: Type mismatched for operands \"%s\".\n",node->children->siblings->row,node->children->siblings->node_value);
                 return NULL;
             }
             Type type = (Type)malloc(sizeof(struct Type_));
@@ -433,11 +433,11 @@ Type TypeOfExp(Node node){
                 return NULL;
             }
             if(type_1->kind!=BASIC){
-                printf("Error type 7 at Line %d: Type mismatched fot operands \"+\".\n",node->children->siblings->row);
+                printf("Error type 7 at Line %d: Type mismatched for operands \"+\".\n",node->children->siblings->row);
                 return NULL;
             }
             if(FAILURE == typecmp(type_1,type_2)){
-                printf("Error type 7 at Line %d: Type mismatched fot operands \"+\".\n",node->children->siblings->row);
+                printf("Error type 7 at Line %d: Type mismatched for operands \"+\".\n",node->children->siblings->row);
                 return NULL;
             }
             return type_1;
@@ -449,11 +449,11 @@ Type TypeOfExp(Node node){
                 return NULL;
             }
             if(type_1->kind!=BASIC){
-                printf("Error type 7 at Line %d: Type mismatched fot operands \"-\".\n",node->children->siblings->row);
+                printf("Error type 7 at Line %d: Type mismatched for operands \"-\".\n",node->children->siblings->row);
                 return NULL;
             }
             if(FAILURE == typecmp(type_1,type_2)){
-                printf("Error type 7 at Line %d: Type mismatched fot operands \"-\".\n",node->children->siblings->row);
+                printf("Error type 7 at Line %d: Type mismatched for operands \"-\".\n",node->children->siblings->row);
                 return NULL;
             }
             return type_1;
@@ -465,11 +465,11 @@ Type TypeOfExp(Node node){
                 return NULL;
             }
             if(type_1->kind!=BASIC){
-                printf("Error type 7 at Line %d: Type mismatched fot operands \"*\".\n",node->children->siblings->row);
+                printf("Error type 7 at Line %d: Type mismatched for operands \"*\".\n",node->children->siblings->row);
                 return NULL;
             }
             if(FAILURE == typecmp(type_1,type_2)){
-                printf("Error type 7 at Line %d: Type mismatched fot operands \"*\".\n",node->children->siblings->row);
+                printf("Error type 7 at Line %d: Type mismatched for operands \"*\".\n",node->children->siblings->row);
                 return NULL;
             }
             return type_1;
@@ -481,11 +481,11 @@ Type TypeOfExp(Node node){
                 return NULL;
             }
             if(type_1->kind!=BASIC){
-                printf("Error type 7 at Line %d: Type mismatched fot operands \"/\".\n",node->children->siblings->row);
+                printf("Error type 7 at Line %d: Type mismatched for operands \"/\".\n",node->children->siblings->row);
                 return NULL;
             }
             if(FAILURE == typecmp(type_1,type_2)){
-                printf("Error type 7 at Line %d: Type mismatched fot operands \"/\".\n",node->children->siblings->row);
+                printf("Error type 7 at Line %d: Type mismatched for operands \"/\".\n",node->children->siblings->row);
                 return NULL;
             }
             return type_1;
@@ -558,7 +558,7 @@ Type TypeOfExp(Node node){
             return NULL;
         }
         if(type->kind!=BASIC){
-            printf("Error type 7 at Line %d: Type mismatched fot operands.\n",node->children->siblings->row);
+            printf("Error type 7 at Line %d: Type mismatched for operands.\n",node->children->siblings->row);
             return NULL;
         }
         return type;
@@ -569,11 +569,11 @@ Type TypeOfExp(Node node){
             return NULL;
         }
         if(type->kind!=BASIC){
-            printf("Error type 7 at Line %d: Type mismatched fot operands.\n",node->children->siblings->row);
+            printf("Error type 7 at Line %d: Type mismatched for operands.\n",node->children->siblings->row);
             return NULL;
         }
         if(type->u.basic!=INT){
-            printf("Error type 7 at Line %d: Type mismatched fot operands.\n",node->children->siblings->row);
+            printf("Error type 7 at Line %d: Type mismatched for operands.\n",node->children->siblings->row);
             return NULL;
         }
         return type;
@@ -640,12 +640,14 @@ Type TypeOfExp(Node node){
         Type type = (Type)malloc(sizeof(struct Type_));
         type->kind = BASIC;
         type->u.basic = INT;
+        addConstant(type);
         return type;
     }
     else{
         Type type = (Type)malloc(sizeof(struct Type_));
         type->kind = BASIC;
         type->u.basic = FLOAT;
+        addConstant(type);
         return type;
     }
     return NULL;

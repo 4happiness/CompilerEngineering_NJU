@@ -3,6 +3,7 @@
 #define SYMTAB_NR 0x3fff
 
 static SymtabNode* symtab;
+static ConstantNode constants;
 
 
 unsigned int hash_pjw(const char* name){
@@ -22,12 +23,14 @@ void initSymtab(){
         symtab[i]->symbol=NULL;
         symtab[i]->next=NULL;
     }
+    constants=NULL;
 }
 
 void freeSymtab(){
     for(int i=0;i<SYMTAB_NR;i++)
         freeSymtabNode(symtab[i]);
     free(symtab);
+    freeConstants(constants);
 }
 
 
@@ -312,4 +315,23 @@ Symbol getSymbol(const char* name, const int kind){
             return symbol;
     }
     return NULL;
+}
+
+int addConstant(Type type){
+    if(type==NULL)
+        return FAILURE;
+    if(type->kind!=BASIC)
+        return FAILURE;
+    ConstantNode new = (ConstantNode)malloc(sizeof(struct ConstantNode_));
+    new->type=type;
+    new->tail=constants;
+    constants=new;
+}
+void freeConstants(ConstantNode constant){
+    if(constant == NULL)
+        return;
+    if(constant->tail!=NULL)
+        freeConstants(constant->tail);
+    freeType(constant->type);
+    free(constant);
 }

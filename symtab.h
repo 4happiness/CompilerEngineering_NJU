@@ -8,6 +8,7 @@ typedef struct FieldList_* FieldList;
 typedef struct Function_* Function;
 typedef struct Symbol_* Symbol;
 typedef struct SymtabNode_* SymtabNode;
+typedef struct ConstantNode_* ConstantNode;
 
 struct Type_ {
     enum {BASIC,ARRAY,STRUCTURE} kind;
@@ -54,6 +55,11 @@ struct SymtabNode_{
     SymtabNode next;
 };
 
+struct ConstantNode_{
+    Type type;
+    ConstantNode tail;
+};
+
 unsigned int hash_pjw(const char*);
 void initSymtab();
 void freeSymtab();
@@ -70,5 +76,7 @@ int typecmp(Type, Type);
 int fieldlistcpy(FieldList, FieldList);
 int fieldlistcmp(FieldList, FieldList);
 Symbol getSymbol(const char*, const int);
+int addConstant(Type);
+void freeConstants(ConstantNode);
 
 #endif
