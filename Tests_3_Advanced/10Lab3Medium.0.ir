@@ -1,0 +1,1742 @@
+FUNCTION safe_add :
+PARAM lhs_add
+PARAM rhs_add
+t1 := #0
+t2 := #0
+t3 := #0
+IF lhs_add > #0 GOTO label10
+GOTO label11
+LABEL label10 :
+t3 := #1
+LABEL label11 :
+IF t3 != #0 GOTO label9
+GOTO label7
+LABEL label9 :
+t6 := #0
+IF rhs_add > #0 GOTO label12
+GOTO label13
+LABEL label12 :
+t6 := #1
+LABEL label13 :
+IF t6 != #0 GOTO label8
+GOTO label7
+LABEL label8 :
+t9 := #0
+t11 := #2147483647 - rhs_add
+IF lhs_add > t11 GOTO label14
+GOTO label15
+LABEL label14 :
+t9 := #1
+LABEL label15 :
+IF t9 != #0 GOTO label6
+GOTO label7
+LABEL label6 :
+t2 := #1
+LABEL label7 :
+IF t2 != #0 GOTO label3
+GOTO label5
+LABEL label5 :
+t14 := #0
+t15 := #0
+IF lhs_add < #0 GOTO label20
+GOTO label21
+LABEL label20 :
+t15 := #1
+LABEL label21 :
+IF t15 != #0 GOTO label19
+GOTO label17
+LABEL label19 :
+t18 := #0
+IF rhs_add < #0 GOTO label22
+GOTO label23
+LABEL label22 :
+t18 := #1
+LABEL label23 :
+IF t18 != #0 GOTO label18
+GOTO label17
+LABEL label18 :
+t21 := #0
+t24 := #0 - #2147483647
+t23 := t24 - rhs_add
+IF lhs_add < t23 GOTO label24
+GOTO label25
+LABEL label24 :
+t21 := #1
+LABEL label25 :
+IF t21 != #0 GOTO label16
+GOTO label17
+LABEL label16 :
+t14 := #1
+LABEL label17 :
+IF t14 != #0 GOTO label3
+GOTO label4
+LABEL label3 :
+t1 := #1
+LABEL label4 :
+IF t1 != #0 GOTO label1
+GOTO label2
+LABEL label1 :
+RETURN lhs_add
+LABEL label2 :
+t28 := lhs_add + rhs_add
+RETURN t28
+FUNCTION safe_sub :
+PARAM lhs_sub
+PARAM rhs_sub
+t31 := #0
+t32 := #0
+IF lhs_sub > #0 GOTO label33
+GOTO label34
+LABEL label33 :
+t32 := #1
+LABEL label34 :
+IF t32 != #0 GOTO label32
+GOTO label30
+LABEL label32 :
+t35 := #0
+IF rhs_sub < #0 GOTO label35
+GOTO label36
+LABEL label35 :
+t35 := #1
+LABEL label36 :
+IF t35 != #0 GOTO label31
+GOTO label30
+LABEL label31 :
+t38 := #0
+t40 := #2147483647 + rhs_sub
+IF lhs_sub > t40 GOTO label37
+GOTO label38
+LABEL label37 :
+t38 := #1
+LABEL label38 :
+IF t38 != #0 GOTO label29
+GOTO label30
+LABEL label29 :
+t31 := #1
+LABEL label30 :
+IF t31 != #0 GOTO label26
+GOTO label28
+LABEL label28 :
+t43 := #0
+t44 := #0
+IF lhs_sub < #0 GOTO label43
+GOTO label44
+LABEL label43 :
+t44 := #1
+LABEL label44 :
+IF t44 != #0 GOTO label42
+GOTO label40
+LABEL label42 :
+t47 := #0
+IF rhs_sub > #0 GOTO label45
+GOTO label46
+LABEL label45 :
+t47 := #1
+LABEL label46 :
+IF t47 != #0 GOTO label41
+GOTO label40
+LABEL label41 :
+t50 := #0
+t53 := #0 - #2147483647
+t52 := t53 + rhs_sub
+IF lhs_sub < t52 GOTO label47
+GOTO label48
+LABEL label47 :
+t50 := #1
+LABEL label48 :
+IF t50 != #0 GOTO label39
+GOTO label40
+LABEL label39 :
+t43 := #1
+LABEL label40 :
+IF t43 != #0 GOTO label26
+GOTO label27
+LABEL label26 :
+RETURN lhs_sub
+LABEL label27 :
+t57 := lhs_sub - rhs_sub
+RETURN t57
+FUNCTION safe_mul :
+PARAM lhs_mul
+PARAM rhs_mul
+t60 := #0
+t61 := #0
+t62 := #0
+IF lhs_mul > #0 GOTO label60
+GOTO label61
+LABEL label60 :
+t62 := #1
+LABEL label61 :
+IF t62 != #0 GOTO label59
+GOTO label57
+LABEL label59 :
+t65 := #0
+IF rhs_mul > #0 GOTO label62
+GOTO label63
+LABEL label62 :
+t65 := #1
+LABEL label63 :
+IF t65 != #0 GOTO label58
+GOTO label57
+LABEL label58 :
+t68 := #0
+t70 := #2147483647 / rhs_mul
+IF lhs_mul > t70 GOTO label64
+GOTO label65
+LABEL label64 :
+t68 := #1
+LABEL label65 :
+IF t68 != #0 GOTO label56
+GOTO label57
+LABEL label56 :
+t61 := #1
+LABEL label57 :
+IF t61 != #0 GOTO label51
+GOTO label55
+LABEL label55 :
+t73 := #0
+t74 := #0
+IF lhs_mul > #0 GOTO label70
+GOTO label71
+LABEL label70 :
+t74 := #1
+LABEL label71 :
+IF t74 != #0 GOTO label69
+GOTO label67
+LABEL label69 :
+t77 := #0
+IF rhs_mul <= #0 GOTO label72
+GOTO label73
+LABEL label72 :
+t77 := #1
+LABEL label73 :
+IF t77 != #0 GOTO label68
+GOTO label67
+LABEL label68 :
+t80 := #0
+t83 := #2147483647 / lhs_mul
+t82 := #0 - t83
+IF rhs_mul < t82 GOTO label74
+GOTO label75
+LABEL label74 :
+t80 := #1
+LABEL label75 :
+IF t80 != #0 GOTO label66
+GOTO label67
+LABEL label66 :
+t73 := #1
+LABEL label67 :
+IF t73 != #0 GOTO label51
+GOTO label54
+LABEL label54 :
+t86 := #0
+t87 := #0
+IF lhs_mul <= #0 GOTO label80
+GOTO label81
+LABEL label80 :
+t87 := #1
+LABEL label81 :
+IF t87 != #0 GOTO label79
+GOTO label77
+LABEL label79 :
+t90 := #0
+IF rhs_mul > #0 GOTO label82
+GOTO label83
+LABEL label82 :
+t90 := #1
+LABEL label83 :
+IF t90 != #0 GOTO label78
+GOTO label77
+LABEL label78 :
+t93 := #0
+t96 := #2147483647 / rhs_mul
+t95 := #0 - t96
+IF lhs_mul < t95 GOTO label84
+GOTO label85
+LABEL label84 :
+t93 := #1
+LABEL label85 :
+IF t93 != #0 GOTO label76
+GOTO label77
+LABEL label76 :
+t86 := #1
+LABEL label77 :
+IF t86 != #0 GOTO label51
+GOTO label53
+LABEL label53 :
+t99 := #0
+t100 := #0
+IF lhs_mul <= #0 GOTO label91
+GOTO label92
+LABEL label91 :
+t100 := #1
+LABEL label92 :
+IF t100 != #0 GOTO label90
+GOTO label87
+LABEL label90 :
+t103 := #0
+IF rhs_mul <= #0 GOTO label93
+GOTO label94
+LABEL label93 :
+t103 := #1
+LABEL label94 :
+IF t103 != #0 GOTO label89
+GOTO label87
+LABEL label89 :
+t106 := #0
+IF lhs_mul != #0 GOTO label95
+GOTO label96
+LABEL label95 :
+t106 := #1
+LABEL label96 :
+IF t106 != #0 GOTO label88
+GOTO label87
+LABEL label88 :
+t109 := #0
+t111 := #2147483647 / lhs_mul
+IF rhs_mul < t111 GOTO label97
+GOTO label98
+LABEL label97 :
+t109 := #1
+LABEL label98 :
+IF t109 != #0 GOTO label86
+GOTO label87
+LABEL label86 :
+t99 := #1
+LABEL label87 :
+IF t99 != #0 GOTO label51
+GOTO label52
+LABEL label51 :
+t60 := #1
+LABEL label52 :
+IF t60 != #0 GOTO label49
+GOTO label50
+LABEL label49 :
+RETURN lhs_mul
+LABEL label50 :
+t115 := lhs_mul * rhs_mul
+RETURN t115
+FUNCTION safe_div :
+PARAM lhs_div
+PARAM rhs_div
+t118 := #0
+t119 := #0
+IF rhs_div == #0 GOTO label104
+GOTO label105
+LABEL label104 :
+t119 := #1
+LABEL label105 :
+IF t119 != #0 GOTO label101
+GOTO label103
+LABEL label103 :
+t122 := #0
+t123 := #0
+t125 := #0 - #2147483647
+IF lhs_div == t125 GOTO label109
+GOTO label110
+LABEL label109 :
+t123 := #1
+LABEL label110 :
+IF t123 != #0 GOTO label108
+GOTO label107
+LABEL label108 :
+t127 := #0
+t129 := #0 - #1
+IF rhs_div == t129 GOTO label111
+GOTO label112
+LABEL label111 :
+t127 := #1
+LABEL label112 :
+IF t127 != #0 GOTO label106
+GOTO label107
+LABEL label106 :
+t122 := #1
+LABEL label107 :
+IF t122 != #0 GOTO label101
+GOTO label102
+LABEL label101 :
+t118 := #1
+LABEL label102 :
+IF t118 != #0 GOTO label99
+GOTO label100
+LABEL label99 :
+RETURN lhs_div
+LABEL label100 :
+t132 := lhs_div / rhs_div
+RETURN t132
+FUNCTION safe_index :
+PARAM i
+PARAM size
+IF i < #0 GOTO label113
+GOTO label115
+LABEL label115 :
+IF i >= size GOTO label113
+GOTO label114
+LABEL label113 :
+RETURN #0
+LABEL label114 :
+RETURN i
+
+FUNCTION i_func_109 :
+PARAM i_func_109_i_0
+DEC alloc1 8
+a2_i_L151 := &alloc1
+IF i_func_109_i_0 <= #0 GOTO label116
+GOTO label117
+LABEL label116 :
+t143 := #0 - #23965368
+RETURN t143
+GOTO label118
+LABEL label117 :
+t146 := i_func_109_i_0 - #1
+i_func_109_i_0 := t146
+LABEL label118 :
+
+t150 := i_func_109_i_0 - #1
+i_func_109_i_0 := t150
+
+ARG i_func_109_i_0
+t154 := CALL i_func_109
+i_L1798 := t154
+
+t157 := i_func_109_i_0 - #1
+i_func_109_i_0 := t157
+
+ARG i_func_109_i_0
+t163 := CALL i_func_109
+i_L1798 := t163
+
+t165 := a2_i_L151
+t167 := #4 * #1
+t168 := t165 + t167
+t160 := t168
+*t160 := i_L1798
+
+t171 := i_func_109_i_0 - #1
+i_func_109_i_0 := t171
+ARG i_func_109_i_0
+t177 := CALL i_func_109
+i_L1798 := t177
+
+t179 := a2_i_L151
+t181 := #4 * #0
+t182 := t179 + t181
+t174 := t182
+*t174 := i_L1798
+
+t185 := #0 - #1894810646
+i_L1800 := t185
+i_L1801 := #754094387
+t192 := i_L1800 / i_L1801
+t195 := a2_i_L151
+ARG #2
+ARG i_L1798
+t196 := CALL safe_index
+t197 := #4 * t196
+t198 := t195 + t197
+t191 := t198
+*t191 := t192
+t190 := *t191
+i_L1799 := t190
+t203 := i_func_109_i_0 - #1
+i_func_109_i_0 := t203
+ARG i_func_109_i_0
+t207 := CALL i_func_109
+t209 := a2_i_L151
+ARG #2
+ARG i_L1798
+t210 := CALL safe_index
+t211 := #4 * t210
+t212 := t209 + t211
+t206 := t212
+*t206 := t207
+t217 := #0
+IF i_L1800 != #0 GOTO label119
+GOTO label121
+LABEL label121 :
+IF i_L1801 != #0 GOTO label119
+GOTO label120
+LABEL label119 :
+t217 := #1
+LABEL label120 :
+t220 := a2_i_L151
+ARG #2
+ARG i_L1798
+t221 := CALL safe_index
+t222 := #4 * t221
+t223 := t220 + t222
+t216 := t223
+*t216 := t217
+t228 := #0
+IF i_L1800 <= i_L1801 GOTO label122
+GOTO label123
+LABEL label122 :
+t228 := #1
+LABEL label123 :
+t231 := a2_i_L151
+ARG #2
+ARG i_L1798
+t232 := CALL safe_index
+t233 := #4 * t232
+t234 := t231 + t233
+t227 := t234
+*t227 := t228
+t239 := i_func_109_i_0 - #1
+i_func_109_i_0 := t239
+ARG i_func_109_i_0
+t243 := CALL i_func_109
+WRITE i_L1798
+WRITE i_L1800
+WRITE i_L1801
+WRITE i_L1799
+t249 := i_func_109_i_0 - #1
+i_func_109_i_0 := t249
+ARG i_func_109_i_0
+t252 := CALL i_func_109
+RETURN t252
+FUNCTION i_func_110 :
+PARAM i_func_110_i_0
+PARAM i_func_110_i_1
+DEC alloc2 8
+a2_i_L152 := &alloc2
+DEC alloc3 8
+a2_i_L153 := &alloc3
+IF i_func_110_i_1 <= #0 GOTO label124
+GOTO label125
+LABEL label124 :
+t256 := #0 - #1463232859
+RETURN t256
+GOTO label126
+LABEL label125 :
+t259 := i_func_110_i_1 - #1
+i_func_110_i_1 := t259
+LABEL label126 :
+i_L1803 := #1116031903
+t265 := #0 - #1859457577
+i_L1804 := t265
+t270 := #0
+IF i_L1803 == i_L1804 GOTO label127
+GOTO label128
+LABEL label127 :
+t270 := #1
+LABEL label128 :
+i_func_110_i_0 := t270
+i_L1802 := i_func_110_i_0
+ARG i_L1804
+ARG i_L1803
+t276 := CALL safe_sub
+i_func_110_i_0 := t276
+t279 := a2_i_L152
+t281 := #4 * #1
+t282 := t279 + t281
+t273 := t282
+*t273 := i_func_110_i_0
+ARG i_L1804
+ARG i_L1803
+t287 := CALL safe_mul
+i_func_110_i_0 := t287
+t290 := a2_i_L152
+t292 := #4 * #0
+t293 := t290 + t292
+t284 := t293
+*t284 := i_func_110_i_0
+t298 := i_func_110_i_0 / i_L1803
+t301 := a2_i_L152
+t306 := #0 - #1503113529
+t302 := t306 + #1503113529
+t303 := #4 * t302
+t304 := t301 + t303
+t297 := t304
+*t297 := t298
+t296 := *t297
+t309 := a2_i_L153
+t311 := #4 * #1
+t312 := t309 + t311
+t295 := t312
+*t295 := t296
+t317 := #0
+t318 := #0 - #1210419932
+IF t318 != #0 GOTO label130
+GOTO label129
+LABEL label129 :
+t317 := #1
+LABEL label130 :
+t320 := a2_i_L152
+ARG #2
+ARG i_func_110_i_0
+t321 := CALL safe_index
+t322 := #4 * t321
+t323 := t320 + t322
+t316 := t323
+*t316 := t317
+t315 := *t316
+t327 := a2_i_L153
+t329 := #4 * #0
+t330 := t327 + t329
+t314 := t330
+*t314 := t315
+i_L1805 := #0
+t335 := i_func_110_i_1 - #1
+i_func_110_i_1 := t335
+t341 := a2_i_L153
+t347 := #0 - #1864002382
+t342 := #1864002383 + t347
+t343 := #4 * t342
+t344 := t341 + t343
+t340 := *t344
+ARG i_func_110_i_1
+ARG t340
+t339 := CALL i_func_110
+t350 := a2_i_L152
+t355 := #0 - #748709421
+t351 := t355 + #748709421
+t352 := #4 * t351
+t353 := t350 + t352
+t338 := t353
+*t338 := t339
+t359 := #0
+IF i_func_110_i_0 == i_L1803 GOTO label131
+GOTO label132
+LABEL label131 :
+t359 := #1
+LABEL label132 :
+t362 := a2_i_L152
+t367 := a2_i_L153
+t372 := #0 - #1480519676
+t368 := t372 + #1480519677
+t369 := #4 * t368
+t370 := t367 + t369
+t363 := *t370
+t364 := #4 * t363
+t365 := t362 + t364
+t358 := t365
+*t358 := t359
+ARG i_L1803
+ARG i_func_110_i_0
+t376 := CALL safe_add
+t379 := a2_i_L152
+t384 := a2_i_L153
+t389 := #0 - #900351991
+t385 := t389 + #900351991
+t386 := #4 * t385
+t387 := t384 + t386
+t380 := *t387
+t381 := #4 * t380
+t382 := t379 + t381
+t375 := t382
+*t375 := t376
+t394 := #2008213726 / i_func_110_i_0
+t393 := #0 - t394
+t397 := a2_i_L152
+t402 := a2_i_L153
+t408 := #0 - #470548316
+t403 := #470548317 + t408
+t404 := #4 * t403
+t405 := t402 + t404
+t398 := *t405
+t399 := #4 * t398
+t400 := t397 + t399
+t392 := t400
+*t392 := t393
+t411 := i_func_110_i_1 - #1
+i_func_110_i_1 := t411
+LABEL label133 :
+ARG i_func_110_i_1
+ARG i_func_110_i_0
+t416 := CALL i_func_110
+t419 := a2_i_L152
+t424 := a2_i_L153
+t429 := #0 - #430854412
+t425 := t429 + #430854412
+t426 := #4 * t425
+t427 := t424 + t426
+t420 := *t427
+t421 := #4 * t420
+t422 := t419 + t421
+t415 := t422
+*t415 := t416
+t414 := *t415
+IF t414 != #0 GOTO label136
+GOTO label135
+LABEL label136 :
+t432 := #0
+IF i_L1805 < #4 GOTO label137
+GOTO label138
+LABEL label137 :
+t432 := #1
+LABEL label138 :
+IF t432 != #0 GOTO label134
+GOTO label135
+LABEL label134 :
+DEC alloc4 4
+a1_i_L141 := &alloc4
+DEC alloc5 4
+a1_i_L142 := &alloc5
+t436 := i_func_110_i_1 - #1
+i_func_110_i_1 := t436
+ARG i_func_110_i_1
+t440 := CALL i_func_109
+t442 := a1_i_L141
+t444 := #4 * #0
+t445 := t442 + t444
+t439 := t445
+*t439 := t440
+t450 := #0
+t452 := a2_i_L153
+t457 := #0 - #888552456
+t453 := t457 + #888552456
+t454 := #4 * t453
+t455 := t452 + t454
+t451 := *t455
+IF t451 != #0 GOTO label141
+GOTO label140
+LABEL label141 :
+IF i_func_110_i_0 != #0 GOTO label139
+GOTO label140
+LABEL label139 :
+t450 := #1
+LABEL label140 :
+t461 := a2_i_L152
+t467 := a1_i_L141
+t473 := #0 - #536556847
+t468 := #536556847 + t473
+t469 := #4 * t468
+t470 := t467 + t469
+t466 := *t470
+ARG #2
+ARG t466
+t462 := CALL safe_index
+t463 := #4 * t462
+t464 := t461 + t463
+t449 := t464
+*t449 := t450
+t448 := *t449
+t476 := a1_i_L142
+t478 := #4 * #0
+t479 := t476 + t478
+t447 := t479
+*t447 := t448
+t484 := #0
+t486 := a2_i_L153
+t491 := #0 - #296908857
+t487 := t491 + #296908857
+t488 := #4 * t487
+t489 := t486 + t488
+t485 := *t489
+IF t485 != #0 GOTO label143
+GOTO label142
+LABEL label142 :
+t484 := #1
+LABEL label143 :
+t494 := a2_i_L152
+t500 := #0 - #1155111555
+t495 := #1155111555 + t500
+t496 := #4 * t495
+t497 := t494 + t496
+t483 := t497
+*t483 := t484
+t482 := *t483
+i_L1806 := t482
+i_L1807 := #0
+t505 := i_L1805 + #1
+i_L1805 := t505
+t509 := i_func_110_i_1 - #1
+i_func_110_i_1 := t509
+LABEL label144 :
+ARG i_func_110_i_1
+t514 := CALL i_func_109
+t516 := a1_i_L141
+t522 := a1_i_L142
+t527 := #0 - #2138024103
+t523 := t527 + #2138024103
+t524 := #4 * t523
+t525 := t522 + t524
+t521 := *t525
+ARG #1
+ARG t521
+t517 := CALL safe_index
+t518 := #4 * t517
+t519 := t516 + t518
+t513 := t519
+*t513 := t514
+t512 := *t513
+IF t512 != #0 GOTO label147
+GOTO label146
+LABEL label147 :
+t531 := #0
+IF i_L1807 < #4 GOTO label148
+GOTO label149
+LABEL label148 :
+t531 := #1
+LABEL label149 :
+IF t531 != #0 GOTO label145
+GOTO label146
+LABEL label145 :
+DEC alloc6 8
+a2_i_L154 := &alloc6
+t540 := a2_i_L153
+t546 := #0 - #1182590075
+t541 := #1182590076 + t546
+t542 := #4 * t541
+t543 := t540 + t542
+t538 := *t543
+t548 := a1_i_L141
+t554 := #0 - #1010346434
+t549 := #1010346434 + t554
+t550 := #4 * t549
+t551 := t548 + t550
+t539 := *t551
+t537 := t538 * t539
+t556 := a2_i_L152
+t562 := #0 - #1325879696
+t557 := #1325879697 + t562
+t558 := #4 * t557
+t559 := t556 + t558
+t536 := t559
+*t536 := t537
+t535 := *t536
+t564 := a2_i_L154
+t566 := #4 * #1
+t567 := t564 + t566
+t534 := t567
+*t534 := t535
+t575 := a2_i_L153
+t580 := #0 - #94349049
+t576 := t580 + #94349050
+t577 := #4 * t576
+t578 := t575 + t577
+t574 := *t578
+t583 := a1_i_L142
+t588 := #0 - #1455337202
+t584 := t588 + #1455337202
+t585 := #4 * t584
+t586 := t583 + t585
+t573 := t586
+*t573 := t574
+t572 := *t573
+t591 := a2_i_L152
+t597 := a1_i_L141
+t603 := #0 - #1555571075
+t598 := #1555571075 + t603
+t599 := #4 * t598
+t600 := t597 + t599
+t596 := *t600
+ARG #2
+ARG t596
+t592 := CALL safe_index
+t593 := #4 * t592
+t594 := t591 + t593
+t571 := t594
+*t571 := t572
+t570 := *t571
+t606 := a2_i_L154
+t608 := #4 * #0
+t609 := t606 + t608
+t569 := t609
+*t569 := t570
+t617 := a1_i_L141
+t623 := #0 - #169747604
+t618 := #169747604 + t623
+t619 := #4 * t618
+t620 := t617 + t619
+t616 := *t620
+t625 := a2_i_L154
+t630 := #0 - #519950221
+t626 := t630 + #519950221
+t627 := #4 * t626
+t628 := t625 + t627
+t615 := t628
+*t615 := t616
+t614 := *t615
+t633 := a2_i_L152
+t638 := a2_i_L153
+t644 := #0 - #1471101258
+t639 := #1471101258 + t644
+t640 := #4 * t639
+t641 := t638 + t640
+t634 := *t641
+t635 := #4 * t634
+t636 := t633 + t635
+t613 := t636
+*t613 := t614
+t612 := *t613
+i_L1808 := t612
+t647 := i_func_110_i_1 - #1
+i_func_110_i_1 := t647
+ARG i_func_110_i_1
+t653 := CALL i_func_109
+t655 := a2_i_L152
+t660 := a2_i_L153
+t665 := #0 - #663910960
+t661 := t665 + #663910960
+t662 := #4 * t661
+t663 := t660 + t662
+t656 := *t663
+t657 := #4 * t656
+t658 := t655 + t657
+t652 := t658
+*t652 := t653
+t651 := *t652
+i_L1809 := t651
+t669 := i_L1807 + #1
+i_L1807 := t669
+t673 := i_func_110_i_1 - #1
+i_func_110_i_1 := t673
+ARG i_func_110_i_1
+t677 := CALL i_func_109
+t679 := i_func_110_i_1 - #2
+i_func_110_i_1 := t679
+t684 := a2_i_L152
+t690 := #0 - #1801800890
+t685 := #1801800891 + t690
+t686 := #4 * t685
+t687 := t684 + t686
+t683 := *t687
+ARG i_func_110_i_1
+ARG t683
+t682 := CALL i_func_110
+ARG i_func_110_i_1
+ARG t682
+t694 := CALL i_func_110
+t696 := i_func_110_i_1 - #1
+i_func_110_i_1 := t696
+ARG i_func_110_i_1
+t700 := CALL i_func_109
+t702 := a2_i_L152
+t708 := a1_i_L141
+t714 := #0 - #1806030679
+t709 := #1806030679 + t714
+t710 := #4 * t709
+t711 := t708 + t710
+t707 := *t711
+ARG #2
+ARG t707
+t703 := CALL safe_index
+t704 := #4 * t703
+t705 := t702 + t704
+t699 := t705
+*t699 := t700
+t718 := i_func_110_i_1 - #1
+i_func_110_i_1 := t718
+ARG i_func_110_i_1
+t722 := CALL i_func_109
+t724 := a2_i_L152
+t729 := a2_i_L153
+t734 := #0 - #300311755
+t730 := t734 + #300311755
+t731 := #4 * t730
+t732 := t729 + t731
+t725 := *t732
+t726 := #4 * t725
+t727 := t724 + t726
+t721 := t727
+*t721 := t722
+WRITE i_L1808
+WRITE i_L1809
+GOTO label144
+LABEL label146 :
+t740 := i_func_110_i_1 - #1
+i_func_110_i_1 := t740
+t746 := a1_i_L141
+t751 := #0 - #657742688
+t747 := t751 + #657742688
+t748 := #4 * t747
+t749 := t746 + t748
+t745 := *t749
+ARG i_func_110_i_1
+ARG t745
+t744 := CALL i_func_110
+t755 := a2_i_L152
+t760 := a2_i_L153
+t765 := #0 - #817593831
+t761 := t765 + #817593832
+t762 := #4 * t761
+t763 := t760 + t762
+t756 := *t763
+t757 := #4 * t756
+t758 := t755 + t757
+t743 := t758
+*t743 := t744
+t769 := i_func_110_i_1 - #1
+i_func_110_i_1 := t769
+ARG i_func_110_i_1
+t773 := CALL i_func_109
+t775 := a2_i_L152
+t781 := a1_i_L141
+t786 := #0 - #42719745
+t782 := t786 + #42719745
+t783 := #4 * t782
+t784 := t781 + t783
+t780 := *t784
+ARG #2
+ARG t780
+t776 := CALL safe_index
+t777 := #4 * t776
+t778 := t775 + t777
+t772 := t778
+*t772 := t773
+t792 := a1_i_L141
+t798 := #0 - #2009452781
+t793 := #2009452781 + t798
+t794 := #4 * t793
+t795 := t792 + t794
+t791 := *t795
+t800 := a2_i_L152
+t805 := a2_i_L153
+t810 := #0 - #814979365
+t806 := t810 + #814979365
+t807 := #4 * t806
+t808 := t805 + t807
+t801 := *t808
+t802 := #4 * t801
+t803 := t800 + t802
+t790 := t803
+*t790 := t791
+WRITE i_L1806
+GOTO label133
+LABEL label135 :
+WRITE i_L1803
+WRITE i_L1804
+WRITE i_L1802
+t819 := #0 - #130021823
+t821 := a2_i_L152
+t826 := a2_i_L153
+t831 := #0 - #1440252424
+t827 := t831 + #1440252424
+t828 := #4 * t827
+t829 := t826 + t828
+t822 := *t829
+t823 := #4 * t822
+t824 := t821 + t823
+t818 := t824
+*t818 := t819
+t817 := *t818
+RETURN t817
+FUNCTION i_func_111 :
+PARAM i_func_111_i_0
+DEC alloc7 8
+a2_i_L155 := &alloc7
+DEC alloc8 8
+a2_i_L156 := &alloc8
+DEC alloc9 8
+a2_i_L157 := &alloc9
+t835 := i_func_111_i_0 - #1
+i_func_111_i_0 := t835
+i_L1811 := #1206799037
+i_L1812 := #1789084677
+t843 := #0
+IF i_L1811 >= i_L1812 GOTO label150
+GOTO label151
+LABEL label150 :
+t843 := #1
+LABEL label151 :
+i_L1810 := t843
+i_L1813 := #554473299
+t849 := i_func_111_i_0 - #1
+i_func_111_i_0 := t849
+ARG i_func_111_i_0
+ARG i_L1813
+t855 := CALL i_func_110
+i_L1810 := t855
+t858 := a2_i_L155
+t860 := #4 * #1
+t861 := t858 + t860
+t852 := t861
+*t852 := i_L1810
+i_L1811 := #331077547
+t867 := a2_i_L155
+t869 := #4 * #0
+t870 := t867 + t869
+t863 := t870
+*t863 := i_L1811
+t877 := #0 - #769032326
+i_L1812 := t877
+t879 := a2_i_L155
+t881 := #4 * i_L1811
+t882 := t879 + t881
+t874 := t882
+*t874 := i_L1812
+t873 := *t874
+t884 := a2_i_L156
+t886 := #4 * #1
+t887 := t884 + t886
+t872 := t887
+*t872 := t873
+t892 := #0
+IF i_L1812 <= i_L1810 GOTO label152
+GOTO label153
+LABEL label152 :
+t892 := #1
+LABEL label153 :
+t895 := a2_i_L155
+t897 := #4 * i_L1811
+t898 := t895 + t897
+t891 := t898
+*t891 := t892
+t890 := *t891
+t900 := a2_i_L156
+t902 := #4 * #0
+t903 := t900 + t902
+t889 := t903
+*t889 := t890
+t906 := i_func_111_i_0 - #1
+i_func_111_i_0 := t906
+ARG i_func_111_i_0
+t912 := CALL i_func_111
+t914 := a2_i_L155
+t919 := a2_i_L156
+t924 := #0 - #1856318752
+t920 := t924 + #1856318753
+t921 := #4 * t920
+t922 := t919 + t921
+t915 := *t922
+t916 := #4 * t915
+t917 := t914 + t916
+t911 := t917
+*t911 := t912
+t910 := *t911
+t927 := a2_i_L157
+t929 := #4 * #1
+t930 := t927 + t929
+t909 := t930
+*t909 := t910
+t935 := #0
+IF i_L1811 <= i_L1812 GOTO label154
+GOTO label155
+LABEL label154 :
+t935 := #1
+LABEL label155 :
+t938 := a2_i_L155
+t943 := a2_i_L156
+t949 := #0 - #1689293298
+t944 := #1689293299 + t949
+t945 := #4 * t944
+t946 := t943 + t945
+t939 := *t946
+t940 := #4 * t939
+t941 := t938 + t940
+t934 := t941
+*t934 := t935
+t933 := *t934
+t951 := a2_i_L157
+t953 := #4 * #0
+t954 := t951 + t953
+t932 := t954
+*t932 := t933
+t957 := i_func_111_i_0 - #1
+i_func_111_i_0 := t957
+t963 := a2_i_L157
+t968 := #0 - #86610958
+t964 := t968 + #86610958
+t965 := #4 * t964
+t966 := t963 + t965
+t962 := *t966
+ARG i_func_111_i_0
+ARG t962
+t961 := CALL i_func_110
+t972 := a2_i_L155
+t977 := a2_i_L156
+t982 := #0 - #214383566
+t978 := t982 + #214383566
+t979 := #4 * t978
+t980 := t977 + t979
+t973 := *t980
+t974 := #4 * t973
+t975 := t972 + t974
+t960 := t975
+*t960 := t961
+t986 := #0
+t989 := a2_i_L157
+t995 := #0 - #891954383
+t990 := #891954384 + t995
+t991 := #4 * t990
+t992 := t989 + t991
+t987 := *t992
+IF t987 >= i_L1811 GOTO label156
+GOTO label157
+LABEL label156 :
+t986 := #1
+LABEL label157 :
+t997 := a2_i_L155
+t1002 := a2_i_L156
+t1008 := #0 - #799394705
+t1003 := #799394706 + t1008
+t1004 := #4 * t1003
+t1005 := t1002 + t1004
+t998 := *t1005
+t999 := #4 * t998
+t1000 := t997 + t999
+t985 := t1000
+*t985 := t986
+t1011 := i_func_111_i_0 - #1
+i_func_111_i_0 := t1011
+ARG i_func_111_i_0
+t1015 := CALL i_func_109
+t1017 := a2_i_L155
+t1022 := a2_i_L156
+t1027 := #0 - #1952550805
+t1023 := t1027 + #1952550805
+t1024 := #4 * t1023
+t1025 := t1022 + t1024
+t1018 := *t1025
+t1019 := #4 * t1018
+t1020 := t1017 + t1019
+t1014 := t1020
+*t1014 := t1015
+t1031 := #0
+t1034 := a2_i_L157
+t1039 := #0 - #1430336507
+t1035 := t1039 + #1430336507
+t1036 := #4 * t1035
+t1037 := t1034 + t1036
+t1032 := *t1037
+IF t1032 < i_L1811 GOTO label158
+GOTO label159
+LABEL label158 :
+t1031 := #1
+LABEL label159 :
+t1042 := a2_i_L155
+t1047 := a2_i_L156
+t1053 := #0 - #493587312
+t1048 := #493587312 + t1053
+t1049 := #4 * t1048
+t1050 := t1047 + t1049
+t1043 := *t1050
+t1044 := #4 * t1043
+t1045 := t1042 + t1044
+t1030 := t1045
+*t1030 := t1031
+WRITE i_L1811
+WRITE i_L1812
+WRITE i_L1810
+WRITE i_L1813
+t1064 := a2_i_L157
+t1070 := #0 - #1826738235
+t1065 := #1826738236 + t1070
+t1066 := #4 * t1065
+t1067 := t1064 + t1066
+t1062 := *t1067
+t1061 := t1062 * i_L1811
+t1072 := a2_i_L155
+t1077 := a2_i_L156
+t1082 := #0 - #460382353
+t1078 := t1082 + #460382353
+t1079 := #4 * t1078
+t1080 := t1077 + t1079
+t1073 := *t1080
+t1074 := #4 * t1073
+t1075 := t1072 + t1074
+t1060 := t1075
+*t1060 := t1061
+t1059 := *t1060
+RETURN t1059
+FUNCTION i_func_112 :
+PARAM i_func_112_i_0
+PARAM i_func_112_i_1
+PARAM i_func_112_i_2
+DEC alloc10 8
+a2_i_L158 := &alloc10
+DEC alloc11 4
+a1_i_L143 := &alloc11
+IF i_func_112_i_2 <= #0 GOTO label160
+GOTO label161
+LABEL label160 :
+t1087 := #0 - #416327044
+RETURN t1087
+GOTO label162
+LABEL label161 :
+t1090 := i_func_112_i_2 - #1
+i_func_112_i_2 := t1090
+LABEL label162 :
+t1094 := #0 - #1715991015
+i_L1815 := t1094
+t1099 := #0
+IF i_func_112_i_1 != #0 GOTO label165
+GOTO label164
+LABEL label165 :
+IF i_L1815 != #0 GOTO label163
+GOTO label164
+LABEL label163 :
+t1099 := #1
+LABEL label164 :
+i_func_112_i_0 := t1099
+i_L1814 := i_func_112_i_0
+i_func_112_i_0 := #1823389803
+t1106 := a2_i_L158
+t1108 := #4 * #1
+t1109 := t1106 + t1108
+t1102 := t1109
+*t1102 := i_func_112_i_0
+t1114 := i_func_112_i_1 + i_L1815
+i_func_112_i_0 := t1114
+t1117 := a2_i_L158
+t1119 := #4 * #0
+t1120 := t1117 + t1119
+t1111 := t1120
+*t1111 := i_func_112_i_0
+t1123 := i_func_112_i_2 - #1
+i_func_112_i_2 := t1123
+ARG i_func_112_i_2
+ARG i_func_112_i_1
+t1129 := CALL i_func_110
+t1132 := a2_i_L158
+ARG #2
+ARG i_func_112_i_0
+t1133 := CALL safe_index
+t1134 := #4 * t1133
+t1135 := t1132 + t1134
+t1128 := t1135
+*t1128 := t1129
+t1127 := *t1128
+t1139 := a1_i_L143
+t1141 := #4 * #0
+t1142 := t1139 + t1141
+t1126 := t1142
+*t1126 := t1127
+i_L1816 := #0
+t1147 := #0
+IF i_func_112_i_0 != #0 GOTO label167
+GOTO label166
+LABEL label166 :
+t1147 := #1
+LABEL label167 :
+t1149 := a1_i_L143
+t1155 := a2_i_L158
+t1161 := #0 - #13644657
+t1156 := #13644658 + t1161
+t1157 := #4 * t1156
+t1158 := t1155 + t1157
+t1154 := *t1158
+ARG #1
+ARG t1154
+t1150 := CALL safe_index
+t1151 := #4 * t1150
+t1152 := t1149 + t1151
+t1146 := t1152
+*t1146 := t1147
+LABEL label168 :
+t1166 := #0
+t1169 := a1_i_L143
+t1175 := #0 - #219783349
+t1170 := #219783349 + t1175
+t1171 := #4 * t1170
+t1172 := t1169 + t1171
+t1167 := *t1172
+IF t1167 <= i_func_112_i_0 GOTO label171
+GOTO label172
+LABEL label171 :
+t1166 := #1
+LABEL label172 :
+t1177 := a2_i_L158
+t1182 := #0 - #300386186
+t1178 := t1182 + #300386187
+t1179 := #4 * t1178
+t1180 := t1177 + t1179
+t1165 := t1180
+*t1165 := t1166
+t1164 := *t1165
+IF t1164 != #0 GOTO label169
+GOTO label170
+LABEL label169 :
+DEC alloc12 8
+a2_i_L159 := &alloc12
+DEC alloc13 4
+a1_i_L144 := &alloc13
+i_func_112_i_0 := #723175710
+t1191 := a2_i_L158
+t1196 := a1_i_L143
+t1202 := #0 - #916517310
+t1197 := #916517310 + t1202
+t1198 := #4 * t1197
+t1199 := t1196 + t1198
+t1192 := *t1199
+t1193 := #4 * t1192
+t1194 := t1191 + t1193
+t1187 := t1194
+*t1187 := i_func_112_i_0
+t1186 := *t1187
+t1204 := a2_i_L159
+t1206 := #4 * #1
+t1207 := t1204 + t1206
+t1185 := t1207
+*t1185 := t1186
+i_func_112_i_0 := i_func_112_i_1
+t1215 := a1_i_L143
+t1220 := a2_i_L158
+t1226 := #0 - #1743449019
+t1221 := #1743449019 + t1226
+t1222 := #4 * t1221
+t1223 := t1220 + t1222
+t1216 := *t1223
+t1217 := #4 * t1216
+t1218 := t1215 + t1217
+t1211 := t1218
+*t1211 := i_func_112_i_0
+t1210 := *t1211
+t1228 := a2_i_L159
+t1230 := #4 * #0
+t1231 := t1228 + t1230
+t1209 := t1231
+*t1209 := t1210
+t1234 := i_func_112_i_2 - #1
+i_func_112_i_2 := t1234
+t1242 := a1_i_L143
+t1248 := #0 - #1358976930
+t1243 := #1358976930 + t1248
+t1244 := #4 * t1243
+t1245 := t1242 + t1244
+t1241 := *t1245
+ARG i_func_112_i_2
+ARG i_func_112_i_0
+ARG t1241
+t1240 := CALL i_func_112
+t1252 := a2_i_L158
+t1257 := a2_i_L159
+t1263 := #0 - #623251798
+t1258 := #623251799 + t1263
+t1259 := #4 * t1258
+t1260 := t1257 + t1259
+t1253 := *t1260
+t1254 := #4 * t1253
+t1255 := t1252 + t1254
+t1239 := t1255
+*t1239 := t1240
+t1238 := *t1239
+i_L1817 := t1238
+t1266 := i_func_112_i_2 - #1
+i_func_112_i_2 := t1266
+t1274 := a2_i_L159
+t1280 := #0 - #309444538
+t1275 := #309444539 + t1280
+t1276 := #4 * t1275
+t1277 := t1274 + t1276
+t1273 := *t1277
+ARG i_func_112_i_2
+ARG i_func_112_i_0
+ARG t1273
+t1272 := CALL i_func_112
+t1284 := a1_i_L143
+t1289 := a2_i_L158
+t1291 := #4 * #1
+t1292 := t1289 + t1291
+t1285 := *t1292
+t1286 := #4 * t1285
+t1287 := t1284 + t1286
+t1271 := t1287
+*t1271 := t1272
+t1270 := *t1271
+t1294 := a1_i_L144
+t1296 := #4 * #0
+t1297 := t1294 + t1296
+t1269 := t1297
+*t1269 := t1270
+t1300 := #0
+t1302 := a2_i_L159
+t1307 := #0 - #732736013
+t1303 := t1307 + #732736013
+t1304 := #4 * t1303
+t1305 := t1302 + t1304
+t1301 := *t1305
+IF t1301 != #0 GOTO label175
+GOTO label174
+LABEL label175 :
+t1311 := a1_i_L144
+t1317 := #0 - #4378977
+t1312 := #4378977 + t1317
+t1313 := #4 * t1312
+t1314 := t1311 + t1313
+t1310 := *t1314
+IF t1310 != #0 GOTO label173
+GOTO label174
+LABEL label173 :
+t1300 := #1
+LABEL label174 :
+t1319 := a2_i_L158
+t1324 := a1_i_L143
+t1329 := #0 - #817594736
+t1325 := t1329 + #817594736
+t1326 := #4 * t1325
+t1327 := t1324 + t1326
+t1320 := *t1327
+t1321 := #4 * t1320
+t1322 := t1319 + t1321
+t1299 := t1322
+*t1299 := t1300
+t1333 := i_func_112_i_2 - #1
+i_func_112_i_2 := t1333
+ARG i_func_112_i_2
+t1337 := CALL i_func_109
+t1339 := i_func_112_i_2 - #1
+i_func_112_i_2 := t1339
+t1345 := a1_i_L144
+t1351 := #0 - #236385470
+t1346 := #236385470 + t1351
+t1347 := #4 * t1346
+t1348 := t1345 + t1347
+t1344 := *t1348
+ARG i_func_112_i_2
+ARG t1344
+t1343 := CALL i_func_110
+t1354 := a1_i_L143
+t1359 := a2_i_L158
+t1365 := #0 - #811936218
+t1360 := #811936218 + t1365
+t1361 := #4 * t1360
+t1362 := t1359 + t1361
+t1355 := *t1362
+t1356 := #4 * t1355
+t1357 := t1354 + t1356
+t1342 := t1357
+*t1342 := t1343
+WRITE i_L1817
+GOTO label168
+LABEL label170 :
+t1369 := #0
+IF i_func_112_i_0 != #0 GOTO label176
+GOTO label178
+LABEL label178 :
+IF i_func_112_i_1 != #0 GOTO label176
+GOTO label177
+LABEL label176 :
+t1369 := #1
+LABEL label177 :
+t1372 := a2_i_L158
+t1377 := a1_i_L143
+t1383 := #0 - #1705153774
+t1378 := #1705153774 + t1383
+t1379 := #4 * t1378
+t1380 := t1377 + t1379
+t1373 := *t1380
+t1374 := #4 * t1373
+t1375 := t1372 + t1374
+t1368 := t1375
+*t1368 := t1369
+WRITE i_L1815
+WRITE i_L1814
+t1389 := i_func_112_i_0 / #277018739
+t1392 := a2_i_L158
+t1397 := a1_i_L143
+t1402 := #0 - #223355165
+t1398 := t1402 + #223355165
+t1399 := #4 * t1398
+t1400 := t1397 + t1399
+t1393 := *t1400
+t1394 := #4 * t1393
+t1395 := t1392 + t1394
+t1388 := t1395
+*t1388 := t1389
+t1387 := *t1388
+RETURN t1387
+FUNCTION top_caller :
+PARAM top_caller_i_100
+DEC alloc14 8
+a2_i_L160 := &alloc14
+DEC alloc15 4
+a1_i_L145 := &alloc15
+DEC alloc16 8
+a2_i_L161 := &alloc16
+IF top_caller_i_100 <= #0 GOTO label179
+GOTO label180
+LABEL label179 :
+t1407 := #0 - #1441502566
+RETURN t1407
+GOTO label181
+LABEL label180 :
+t1410 := top_caller_i_100 - #1
+top_caller_i_100 := t1410
+LABEL label181 :
+t1414 := #0 - #1887716785
+i_L1819 := t1414
+i_L1820 := #2083201035
+ARG i_L1820
+ARG i_L1819
+t1419 := CALL safe_sub
+i_L1818 := t1419
+t1423 := top_caller_i_100 - #1
+top_caller_i_100 := t1423
+ARG top_caller_i_100
+t1429 := CALL i_func_109
+i_L1818 := t1429
+t1431 := a2_i_L160
+t1433 := #4 * #1
+t1434 := t1431 + t1433
+t1426 := t1434
+*t1426 := i_L1818
+i_L1819 := #225929809
+t1440 := a2_i_L160
+t1442 := #4 * #0
+t1443 := t1440 + t1442
+t1436 := t1443
+*t1436 := i_L1819
+t1446 := top_caller_i_100 - #1
+top_caller_i_100 := t1446
+ARG top_caller_i_100
+ARG i_L1820
+t1452 := CALL i_func_110
+t1455 := a2_i_L160
+ARG #2
+ARG i_L1819
+t1456 := CALL safe_index
+t1457 := #4 * t1456
+t1458 := t1455 + t1457
+t1451 := t1458
+*t1451 := t1452
+t1450 := *t1451
+t1462 := a1_i_L145
+t1464 := #4 * #0
+t1465 := t1462 + t1464
+t1449 := t1465
+*t1449 := t1450
+t1468 := top_caller_i_100 - #1
+top_caller_i_100 := t1468
+ARG top_caller_i_100
+t1474 := CALL top_caller
+t1476 := a2_i_L160
+t1482 := a1_i_L145
+t1488 := #0 - #718896056
+t1483 := #718896056 + t1488
+t1484 := #4 * t1483
+t1485 := t1482 + t1484
+t1481 := *t1485
+ARG #2
+ARG t1481
+t1477 := CALL safe_index
+t1478 := #4 * t1477
+t1479 := t1476 + t1478
+t1473 := t1479
+*t1473 := t1474
+t1472 := *t1473
+t1491 := a2_i_L161
+t1493 := #4 * #1
+t1494 := t1491 + t1493
+t1471 := t1494
+*t1471 := t1472
+t1497 := top_caller_i_100 - #1
+top_caller_i_100 := t1497
+ARG top_caller_i_100
+ARG i_L1819
+t1503 := CALL i_func_110
+t1506 := a2_i_L160
+t1512 := a1_i_L145
+t1518 := #0 - #311518682
+t1513 := #311518682 + t1518
+t1514 := #4 * t1513
+t1515 := t1512 + t1514
+t1511 := *t1515
+ARG #2
+ARG t1511
+t1507 := CALL safe_index
+t1508 := #4 * t1507
+t1509 := t1506 + t1508
+t1502 := t1509
+*t1502 := t1503
+t1501 := *t1502
+t1521 := a2_i_L161
+t1523 := #4 * #0
+t1524 := t1521 + t1523
+t1500 := t1524
+*t1500 := t1501
+t1527 := #0
+t1530 := a2_i_L161
+t1536 := #0 - #198966916
+t1531 := #198966917 + t1536
+t1532 := #4 * t1531
+t1533 := t1530 + t1532
+t1528 := *t1533
+IF t1528 > i_L1819 GOTO label182
+GOTO label183
+LABEL label182 :
+t1527 := #1
+LABEL label183 :
+t1538 := a2_i_L160
+t1544 := a1_i_L145
+t1549 := #0 - #1122569679
+t1545 := t1549 + #1122569679
+t1546 := #4 * t1545
+t1547 := t1544 + t1546
+t1543 := *t1547
+ARG #2
+ARG t1543
+t1539 := CALL safe_index
+t1540 := #4 * t1539
+t1541 := t1538 + t1540
+t1526 := t1541
+*t1526 := t1527
+t1554 := #0
+t1557 := a2_i_L161
+t1562 := #0 - #773967287
+t1558 := t1562 + #773967288
+t1559 := #4 * t1558
+t1560 := t1557 + t1559
+t1555 := *t1560
+t1565 := a1_i_L145
+t1570 := #0 - #1855490687
+t1566 := t1570 + #1855490687
+t1567 := #4 * t1566
+t1568 := t1565 + t1567
+t1556 := *t1568
+IF t1555 != t1556 GOTO label184
+GOTO label185
+LABEL label184 :
+t1554 := #1
+LABEL label185 :
+t1573 := a2_i_L160
+t1579 := #0 - #1498008847
+t1574 := #1498008848 + t1579
+t1575 := #4 * t1574
+t1576 := t1573 + t1575
+t1553 := t1576
+*t1553 := t1554
+t1582 := top_caller_i_100 - #1
+top_caller_i_100 := t1582
+ARG top_caller_i_100
+t1586 := CALL i_func_109
+t1588 := a2_i_L160
+t1594 := a2_i_L161
+t1599 := #0 - #1121579684
+t1595 := t1599 + #1121579684
+t1596 := #4 * t1595
+t1597 := t1594 + t1596
+t1593 := *t1597
+ARG #2
+ARG t1593
+t1589 := CALL safe_index
+t1590 := #4 * t1589
+t1591 := t1588 + t1590
+t1585 := t1591
+*t1585 := t1586
+WRITE i_L1819
+WRITE i_L1820
+WRITE i_L1818
+t1607 := top_caller_i_100 - #1
+top_caller_i_100 := t1607
+t1614 := a2_i_L161
+t1619 := #0 - #1786708055
+t1615 := t1619 + #1786708055
+t1616 := #4 * t1615
+t1617 := t1614 + t1616
+t1613 := *t1617
+ARG top_caller_i_100
+ARG i_L1819
+ARG t1613
+t1612 := CALL i_func_112
+t1624 := a2_i_L160
+t1630 := a1_i_L145
+t1636 := #0 - #2115509650
+t1631 := #2115509650 + t1636
+t1632 := #4 * t1631
+t1633 := t1630 + t1632
+t1629 := *t1633
+ARG #2
+ARG t1629
+t1625 := CALL safe_index
+t1626 := #4 * t1625
+t1627 := t1624 + t1626
+t1611 := t1627
+*t1611 := t1612
+t1610 := *t1611
+RETURN t1610
+FUNCTION main :
+ARG #3
+t1640 := CALL top_caller
+RETURN #0

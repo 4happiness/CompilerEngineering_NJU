@@ -1,0 +1,44 @@
+FUNCTION main :
+found := #0
+READ t3
+a := t3
+READ t5
+b := t5
+IF a > b GOTO label1
+GOTO label2
+LABEL label1 :
+start := a
+GOTO label3
+LABEL label2 :
+start := b
+LABEL label3 :
+LABEL label4 :
+IF found == #0 GOTO label5
+GOTO label6
+LABEL label5 :
+t16 := start / a
+t15 := t16 * a
+IF start == t15 GOTO label7
+GOTO label8
+LABEL label7 :
+t22 := start / b
+t21 := t22 * b
+IF start == t21 GOTO label9
+GOTO label10
+LABEL label9 :
+result := start
+found := #1
+GOTO label11
+LABEL label10 :
+t31 := start + #1
+start := t31
+LABEL label11 :
+GOTO label12
+LABEL label8 :
+t35 := start + #1
+start := t35
+LABEL label12 :
+GOTO label4
+LABEL label6 :
+WRITE result
+RETURN #0

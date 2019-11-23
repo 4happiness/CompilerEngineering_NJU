@@ -1,0 +1,69 @@
+FUNCTION main :
+DEC alloc1 80
+things := &alloc1
+DEC alloc2 80
+cc := &alloc2
+i := #0
+j := #12
+result := #0
+LABEL label1 :
+IF i < #5 GOTO label2
+GOTO label3
+LABEL label2 :
+t12 := things
+t8 := t12 + #0
+t10 := #4 * i
+t11 := t8 + t10
+t6 := t11
+*t6 := j
+t15 := j * j
+t22 := things
+t18 := t22 + #40
+t20 := #4 * i
+t21 := t18 + t20
+t14 := t21
+*t14 := t15
+t25 := j - #1
+j := t25
+t34 := cc
+t30 := t34 + #0
+t32 := #4 * i
+t33 := t30 + t32
+t28 := t33
+*t28 := j
+t37 := j / #3
+t44 := cc
+t40 := t44 + #40
+t42 := #4 * i
+t43 := t40 + t42
+t36 := t43
+*t36 := t37
+t47 := i + #1
+i := t47
+GOTO label1
+LABEL label3 :
+i := #0
+LABEL label4 :
+IF i < #5 GOTO label5
+GOTO label6
+LABEL label5 :
+t64 := things
+t60 := t64 + #0
+t62 := #4 * i
+t63 := t60 + t62
+t58 := *t63
+t70 := cc
+t66 := t70 + #40
+t67 := #4 - i
+t68 := #4 * t67
+t69 := t66 + t68
+t59 := *t69
+t57 := t58 * t59
+t55 := result + t57
+result := t55
+t75 := i + #1
+i := t75
+GOTO label4
+LABEL label6 :
+WRITE result
+RETURN #0

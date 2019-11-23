@@ -4,7 +4,8 @@
 
 static SymtabNode* symtab;
 static ConstantNode constants;
-
+static int sizeofFieldList(FieldList structure);
+static int offsetofFieldList(FieldList structure, const char* id);
 
 unsigned int hash_pjw(const char* name){
     unsigned int val=0,i;
@@ -24,6 +25,31 @@ void initSymtab(){
         symtab[i]->next=NULL;
     }
     constants=NULL;
+    Symbol func_read = (Symbol)malloc(sizeof(struct Symbol_));
+    Symbol func_write = (Symbol)malloc(sizeof(struct Symbol_));
+    func_read->kind = FUNCTION;
+    func_write->kind = FUNCTION;
+    strcpy(func_read->name,"read");
+    strcpy(func_write->name,"write");
+    func_read->u.func = (Function)malloc(sizeof(struct Function_));
+    func_write->u.func = (Function)malloc(sizeof(struct Function_));
+    func_read->u.func->retType = (Type)malloc(sizeof(struct Type_));
+    func_read->u.func->retType->kind = BASIC;
+    func_read->u.func->retType->u.basic = INT;
+    func_read->u.func->varNum = 0;
+    func_read->u.func->varTypes = NULL;
+
+    func_write->u.func->retType = (Type)malloc(sizeof(struct Type_));
+    func_write->u.func->retType->kind = BASIC;
+    func_write->u.func->retType->u.basic = INT;
+    func_write->u.func->varNum = 1;
+    func_write->u.func->varTypes = (Type*)malloc(sizeof(Type));
+    func_write->u.func->varTypes[0] = (Type)malloc(sizeof(struct Type_));
+    func_write->u.func->varTypes[0]->kind = BASIC;
+    func_write->u.func->varTypes[0]->u.basic = INT;
+
+    addSymbol(func_read);
+    addSymbol(func_write);
 }
 
 void freeSymtab(){
@@ -334,4 +360,45 @@ void freeConstants(ConstantNode constant){
         freeConstants(constant->tail);
     freeType(constant->type);
     free(constant);
+}
+
+static int sizeofFieldList(FieldList structure){
+    int size = 0;
+    for(FieldList current = structure;current!=NULL;current=current->tail){
+        size+=sizeofType(current->type);       
+    }
+    return size;
+}
+
+int sizeofType(Type type){
+    switch (type->kind)
+    {
+    case BASIC:
+        return 4;
+        break;
+    
+    case ARRAY:
+        return type->u.array.size*sizeofType(type->u.array.elem);
+        break;
+    case STRUCTURE:
+        return sizeofFieldList(type->u.structure);
+    default:
+        break;
+    }
+}
+
+static int offsetofFieldList(FieldList structure, const char* id){
+    int offset = 0;
+    for(FieldList current = structure;current!=NULL;current=current->tail){
+        if(!strcmp(id,current->name))
+            break; 
+        offset+=sizeofType(current->type);       
+    }
+    return offset;
+}
+
+int offsetofType(Type type, const char* id){
+    if(type->kind!=STRUCTURE)
+        return -1;
+    return offsetofFieldList(type->u.structure,id);
 }

@@ -1,0 +1,26 @@
+FUNCTION main :
+DEC alloc1 8
+burger := &alloc1
+DEC alloc2 8
+cola := &alloc2
+t3 := burger
+t1 := t3 + #0
+*t1 := #1
+t7 := burger
+t5 := t7 + #4
+*t5 := #2
+t11 := cola
+t9 := t11 + #0
+*t9 := #3
+t15 := cola
+t13 := t15 + #4
+*t13 := #4
+t20 := cola
+t22 := t20 + #0
+t18 := *t22
+t23 := burger
+t25 := t23 + #4
+t19 := *t25
+t17 := t18 + t19
+WRITE t17
+RETURN #0

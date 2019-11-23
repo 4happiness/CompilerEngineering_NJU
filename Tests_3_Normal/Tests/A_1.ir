@@ -1,0 +1,26 @@
+FUNCTION main :
+t := #12
+pp := #4
+tt := #5
+t5 := t * pp
+a := t5
+t10 := a + tt
+t9 := t10 - pp
+b := t9
+t17 := b * pp
+t15 := a + t17
+c := t15
+WRITE c
+t26 := a + b
+t23 := c * t26
+t22 := t23 / #25
+c := t22
+t33 := b + c
+t34 := a / c
+t31 := t33 - t34
+t32 := pp * #12
+t30 := t31 + t32
+b := t30
+WRITE c
+WRITE b
+RETURN #0

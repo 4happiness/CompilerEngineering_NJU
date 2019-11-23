@@ -1,0 +1,8 @@
+int f;
+int f(int param){
+	return param;
+}
+int main()
+{
+	f(f);
+}

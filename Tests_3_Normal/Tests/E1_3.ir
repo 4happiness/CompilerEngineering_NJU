@@ -1,0 +1,87 @@
+FUNCTION isStudentInClass :
+PARAM ccc
+PARAM stu
+ii := #0
+LABEL label1 :
+IF ii < #10 GOTO label2
+GOTO label3
+LABEL label2 :
+t11 := ccc
+t10 := t11 + #0
+t6 := t10 + #0
+t8 := #4 * ii
+t9 := t6 + t8
+t4 := *t9
+t17 := stu
+t13 := t17 + #0
+t15 := #4 * #0
+t16 := t13 + t15
+t5 := *t16
+IF t4 == t5 GOTO label4
+GOTO label5
+LABEL label4 :
+t25 := ccc
+t24 := t25 + #0
+t20 := t24 + #40
+t22 := #4 * ii
+t23 := t20 + t22
+t19 := *t23
+RETURN t19
+LABEL label5 :
+t28 := ii + #1
+ii := t28
+GOTO label1
+LABEL label3 :
+RETURN #0
+FUNCTION main :
+DEC alloc1 84
+cl := &alloc1
+i := #0
+DEC alloc2 80
+ss := &alloc2
+READ t34
+t39 := ss
+t35 := t39 + #0
+t37 := #4 * #0
+t38 := t35 + t37
+t33 := t38
+*t33 := t34
+t47 := ss
+t43 := t47 + #40
+t45 := #4 * #0
+t46 := t43 + t45
+t41 := t46
+*t41 := #0
+t51 := cl
+t49 := t51 + #80
+*t49 := #0
+LABEL label6 :
+IF i < #10 GOTO label7
+GOTO label8
+LABEL label7 :
+t62 := cl
+t61 := t62 + #0
+t57 := t61 + #0
+t59 := #4 * i
+t60 := t57 + t59
+t55 := t60
+*t55 := i
+t65 := i * i
+t73 := cl
+t72 := t73 + #0
+t68 := t72 + #40
+t70 := #4 * i
+t71 := t68 + t70
+t64 := t71
+*t64 := t65
+t76 := i + #1
+i := t76
+GOTO label6
+LABEL label8 :
+t80 := cl
+t82 := ss
+ARG t82
+ARG t80
+t79 := CALL isStudentInClass
+WRITE t79
+RETURN #0

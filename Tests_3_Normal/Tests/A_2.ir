@@ -1,0 +1,46 @@
+FUNCTION main :
+READ t2
+price := t2
+READ t4
+money := t4
+IF price > money GOTO label1
+GOTO label2
+LABEL label1 :
+t8 := money * #2
+IF price > t8 GOTO label3
+GOTO label4
+LABEL label3 :
+WRITE price
+GOTO label5
+LABEL label4 :
+t12 := money * #2
+WRITE t12
+LABEL label5 :
+GOTO label6
+LABEL label2 :
+IF price == money GOTO label7
+GOTO label8
+LABEL label7 :
+IF money > #100 GOTO label9
+GOTO label10
+LABEL label9 :
+WRITE #100
+GOTO label11
+LABEL label10 :
+WRITE money
+LABEL label11 :
+GOTO label12
+LABEL label8 :
+t21 := price * #2
+IF t21 < money GOTO label13
+GOTO label14
+LABEL label13 :
+WRITE money
+GOTO label15
+LABEL label14 :
+t26 := price * #2
+WRITE t26
+LABEL label15 :
+LABEL label12 :
+LABEL label6 :
+RETURN #0

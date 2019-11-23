@@ -113,9 +113,11 @@ static FieldList parseDef_toFieldList(const Node node){
     Node Dec = DecList->children;
     Node VarDec = Dec->children;
     FieldList ret = (FieldList)malloc(sizeof(struct FieldList_));
-    
-    strcpy(ret->name,parseVarDec_toID(VarDec));
     ret->tail=NULL;
+    FieldList tail = ret;
+
+    strcpy(ret->name,parseVarDec_toID(VarDec));
+    
     Type type = parseSpecifier(Specifier);
     ret->type = parseVarDec_toType(VarDec,type);
 
@@ -158,8 +160,8 @@ static FieldList parseDef_toFieldList(const Node node){
         if(VarDec->siblings!=NULL)
             printf("Error type 15 at Line %d: Assignment in struct-definition.\n",VarDec->row);
         
-        temp->tail = ret;
-        ret = temp;
+        tail->tail = temp;
+        tail = temp;
     }
     return ret;
 }
@@ -185,11 +187,8 @@ static FieldList parseDefList_toFieldList(const Node node){
         if(ret_DefList==NULL)
             return ret_Def;
         else{
-            FieldList tail = ret_DefList;
-            while(tail->tail!=NULL)
-                tail = tail->tail;
-            tail->tail = ret_Def;
-            return ret_DefList;
+            ret_Def->tail = ret_DefList;
+            return ret_Def;
         }
     }
 }
@@ -580,6 +579,7 @@ Type TypeOfExp(Node node){
     }
     else if(!strcmp(node->children->node_name,"ID")){
         Node ID = node->children;
+
         if(ID->siblings==NULL){
             Type type = getType(ID->node_value,VARIABLE);
             if(type==NULL)

@@ -1,0 +1,99 @@
+FUNCTION compare :
+PARAM a
+PARAM b
+IF a > b GOTO label1
+GOTO label2
+LABEL label1 :
+RETURN a
+LABEL label2 :
+IF a < b GOTO label3
+GOTO label4
+LABEL label3 :
+RETURN b
+LABEL label4 :
+RETURN #0
+FUNCTION add :
+PARAM aa
+PARAM bb
+t8 := aa + bb
+RETURN t8
+FUNCTION main :
+DEC alloc1 40
+i := &alloc1
+DEC alloc2 20
+r := &alloc2
+n := #0
+LABEL label5 :
+IF n < #10 GOTO label6
+GOTO label7
+LABEL label6 :
+READ t16
+t17 := i
+t19 := #4 * n
+t20 := t17 + t19
+t15 := t20
+*t15 := t16
+t23 := n + #1
+n := t23
+GOTO label5
+LABEL label7 :
+n := #0
+m := #0
+LABEL label8 :
+IF n < #10 GOTO label9
+GOTO label10
+LABEL label9 :
+t35 := i
+t37 := #4 * n
+t38 := t35 + t37
+t34 := *t38
+t41 := i
+t42 := n + #1
+t43 := #4 * t42
+t44 := t41 + t43
+t40 := *t44
+ARG t40
+ARG t34
+t33 := CALL compare
+t48 := r
+t50 := #4 * m
+t51 := t48 + t50
+t32 := t51
+*t32 := t33
+t54 := n + #2
+n := t54
+t58 := m + #1
+m := t58
+GOTO label8
+LABEL label10 :
+n := #0
+LABEL label11 :
+IF n < #5 GOTO label12
+GOTO label13
+LABEL label12 :
+t68 := r
+t70 := #4 * n
+t71 := t68 + t70
+t67 := *t71
+t74 := i
+t76 := #4 * n
+t77 := t74 + t76
+t73 := *t77
+ARG t73
+ARG t67
+t66 := CALL add
+t79 := r
+t81 := #4 * n
+t82 := t79 + t81
+t65 := t82
+*t65 := t66
+t85 := r
+t87 := #4 * n
+t88 := t85 + t87
+t84 := *t88
+WRITE t84
+t91 := n + #1
+n := t91
+GOTO label11
+LABEL label13 :
+RETURN #0

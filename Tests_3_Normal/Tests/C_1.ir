@@ -1,0 +1,216 @@
+FUNCTION main :
+N := #10
+DEC alloc1 40
+heap := &alloc1
+DEC alloc2 40
+result := &alloc2
+i := #0
+stop := #0
+LABEL label1 :
+IF i < #10 GOTO label2
+GOTO label3
+LABEL label2 :
+READ t7
+t8 := heap
+t10 := #4 * i
+t11 := t8 + t10
+t6 := t11
+*t6 := t7
+t14 := i + #1
+i := t14
+GOTO label1
+LABEL label3 :
+t18 := N / #2
+start := t18
+LABEL label4 :
+IF start >= #0 GOTO label5
+GOTO label6
+LABEL label5 :
+stop := #0
+i := start
+LABEL label7 :
+IF stop == #0 GOTO label8
+GOTO label9
+LABEL label8 :
+stop := #1
+t33 := i * #2
+t32 := t33 + #1
+j := t32
+t39 := i * #2
+t38 := t39 + #2
+k := t38
+IF j < N GOTO label10
+GOTO label11
+LABEL label10 :
+t47 := heap
+t49 := #4 * j
+t50 := t47 + t49
+t46 := *t50
+tem1 := t46
+IF k < N GOTO label14
+GOTO label13
+LABEL label14 :
+t56 := heap
+t58 := #4 * k
+t59 := t56 + t58
+t54 := *t59
+t61 := heap
+t63 := #4 * j
+t64 := t61 + t63
+t55 := *t64
+IF t54 < t55 GOTO label12
+GOTO label13
+LABEL label12 :
+t68 := heap
+t70 := #4 * k
+t71 := t68 + t70
+t67 := *t71
+tem1 := t67
+j := k
+LABEL label13 :
+t77 := heap
+t79 := #4 * i
+t80 := t77 + t79
+t75 := *t80
+IF t75 > tem1 GOTO label15
+GOTO label16
+LABEL label15 :
+stop := #0
+t86 := heap
+t88 := #4 * i
+t89 := t86 + t88
+t85 := *t89
+t91 := heap
+t93 := #4 * j
+t94 := t91 + t93
+t84 := t94
+*t84 := t85
+t98 := heap
+t100 := #4 * i
+t101 := t98 + t100
+t96 := t101
+*t96 := tem1
+i := j
+LABEL label16 :
+LABEL label11 :
+GOTO label7
+LABEL label9 :
+t106 := start - #1
+start := t106
+GOTO label4
+LABEL label6 :
+start := #10
+i := #0
+LABEL label17 :
+IF i < N GOTO label18
+GOTO label19
+LABEL label18 :
+t117 := heap
+t119 := #4 * #0
+t120 := t117 + t119
+t116 := *t120
+t122 := result
+t124 := #4 * i
+t125 := t122 + t124
+t115 := t125
+*t115 := t116
+t128 := i + #1
+i := t128
+t133 := heap
+t134 := start - #1
+t135 := #4 * t134
+t136 := t133 + t135
+t132 := *t136
+t140 := heap
+t142 := #4 * #0
+t143 := t140 + t142
+t131 := t143
+*t131 := t132
+stop := #0
+t148 := start - #1
+start := t148
+t := #0
+LABEL label20 :
+IF stop == #0 GOTO label21
+GOTO label22
+LABEL label21 :
+stop := #1
+t159 := t * #2
+t158 := t159 + #1
+j := t158
+t165 := t * #2
+t164 := t165 + #2
+k := t164
+IF j < start GOTO label23
+GOTO label24
+LABEL label23 :
+t173 := heap
+t175 := #4 * j
+t176 := t173 + t175
+t172 := *t176
+tem1 := t172
+IF k < start GOTO label27
+GOTO label26
+LABEL label27 :
+t182 := heap
+t184 := #4 * k
+t185 := t182 + t184
+t180 := *t185
+t187 := heap
+t189 := #4 * j
+t190 := t187 + t189
+t181 := *t190
+IF t180 < t181 GOTO label25
+GOTO label26
+LABEL label25 :
+t194 := heap
+t196 := #4 * k
+t197 := t194 + t196
+t193 := *t197
+tem1 := t193
+j := k
+LABEL label26 :
+t203 := heap
+t205 := #4 * t
+t206 := t203 + t205
+t201 := *t206
+IF t201 > tem1 GOTO label28
+GOTO label29
+LABEL label28 :
+stop := #0
+t212 := heap
+t214 := #4 * t
+t215 := t212 + t214
+t211 := *t215
+t217 := heap
+t219 := #4 * j
+t220 := t217 + t219
+t210 := t220
+*t210 := t211
+t224 := heap
+t226 := #4 * t
+t227 := t224 + t226
+t222 := t227
+*t222 := tem1
+t := j
+LABEL label29 :
+LABEL label24 :
+GOTO label20
+LABEL label22 :
+GOTO label17
+LABEL label19 :
+i := #0
+LABEL label30 :
+IF i < N GOTO label31
+GOTO label32
+LABEL label31 :
+t236 := result
+t238 := #4 * i
+t239 := t236 + t238
+t235 := *t239
+WRITE t235
+t242 := i + #1
+i := t242
+GOTO label30
+LABEL label32 :
+RETURN #0

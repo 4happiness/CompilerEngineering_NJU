@@ -1,0 +1,39 @@
+FUNCTION hanoi :
+PARAM count
+PARAM pole1
+PARAM pole2
+PARAM pole3
+IF count == #1 GOTO label1
+GOTO label2
+LABEL label1 :
+t4 := pole1 * #1000000000
+t3 := t4 + pole3
+WRITE t3
+GOTO label3
+LABEL label2 :
+t8 := count - #1
+ARG pole2
+ARG pole3
+ARG pole1
+ARG t8
+t14 := CALL hanoi
+t16 := pole1 * #1000000000
+t15 := t16 + pole3
+WRITE t15
+t20 := count - #1
+ARG pole3
+ARG pole1
+ARG pole2
+ARG t20
+t26 := CALL hanoi
+LABEL label3 :
+RETURN #0
+FUNCTION main :
+READ t29
+n := t29
+ARG #3
+ARG #2
+ARG #1
+ARG n
+t34 := CALL hanoi
+RETURN #0

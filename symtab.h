@@ -78,5 +78,6 @@ int fieldlistcmp(FieldList, FieldList);
 Symbol getSymbol(const char*, const int);
 int addConstant(Type);
 void freeConstants(ConstantNode);
-
+int offsetofType(Type type, const char* id);
+int sizeofType(Type type);
 #endif

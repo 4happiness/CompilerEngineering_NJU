@@ -2,6 +2,7 @@
 #include "parseTree.h"
 #include "semantic.h"
 #include "symtab.h"
+#include "intercode.h"
 
 extern int yylineno;
 extern int errorNum;
@@ -25,6 +26,8 @@ int main(int argc, char** argv){
 	if(!errorNum){
 		//traverseTree_DLR(root,0);
 		semanticAnalysis(root);
+		generateIR(root);
+		freeSymtab();
 		deleteTree(root);
 	}
 	return 0;

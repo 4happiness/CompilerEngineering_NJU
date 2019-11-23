@@ -50,7 +50,7 @@ while { yylval.type_node = createNode("WHILE","",2,yylineno);strncpy(currentStr,
 ";" { yylval.type_node = createNode("SEMI","",2,yylineno);strncpy(currentStr,yytext,200);return SEMI; }
 "," { yylval.type_node = createNode("COMMA","",2,yylineno);strncpy(currentStr,yytext,200);return COMMA; }
 "=" { yylval.type_node = createNode("ASSIGNOP","",2,yylineno);strncpy(currentStr,yytext,200);return ASSIGNOP; }
-">"|"<"|">="|"<="|"=="|"!=" { yylval.type_node = createNode("RELOP","",2,yylineno);strncpy(currentStr,yytext,200);return RELOP; }
+">"|"<"|">="|"<="|"=="|"!=" { yylval.type_node = createNode("RELOP",yytext,2,yylineno);strncpy(currentStr,yytext,200);return RELOP; }
 "+" { yylval.type_node = createNode("PLUS","",2,yylineno);strncpy(currentStr,yytext,200);return PLUS; }
 "-" { yylval.type_node = createNode("MINUS","",2,yylineno);strncpy(currentStr,yytext,200);return MINUS; }
 "*" { yylval.type_node = createNode("STAR","",2,yylineno);strncpy(currentStr,yytext,200);return STAR; }

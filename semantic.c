@@ -14,7 +14,7 @@ void semanticAnalysis(Node root){
         initSymtab();
         current_func_type = (Type)malloc(sizeof(struct Type_));
         semanticAnalysis(root->children);
-        freeSymtab();
+        //freeSymtab();
         freeType(current_func_type);
 #ifdef DEBUGING
         if(root->siblings!=NULL)
