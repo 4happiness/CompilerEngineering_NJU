@@ -1,0 +1,16 @@
+int print(int a,int b,int c,int d,int e,int f,int g,int h){
+	write(a);
+	write(b);
+	write(c);
+	write(d);
+	write(e);
+	write(f);
+	write(g);
+	write(h);
+	return 0;
+}
+int main() {
+	print(1,2,3,4,5,6,7,8);
+	print(9,10,11,12,13,14,15,16);
+	return 0;
+}

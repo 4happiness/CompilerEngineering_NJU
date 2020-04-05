@@ -3,15 +3,30 @@
 #include "symtab.h"
 #include "parseProduction.h"
 #include "common.h"
+#include "assembly.h"
+#define irSYMTAB_NR 0x3fff
+
+static irSymtabNode* irSymtab;
 
 static int LABEL_NO;
+static int VARIABLE_NO;
 static int TempVAR_NO;
 static int AllocVAR_NO;
 static int FLAG;
+static FILE* fp;
+extern char* path;
+
 
 static int new_label();
 static int new_tvar();
 static int new_alloc();
+static int new_variable();
+static void init_irSymtab();
+static void free_irSymtab();
+static void free_irSymtabNode(irSymtabNode node);
+static void addVariable(const char* name, int no);
+static int checkVariable(const char* name);
+
 static void printOp(Operand);
 static void printIR(InterCodes);
 static void deleteIR(InterCodes intercodes);
@@ -39,9 +54,59 @@ static InterCodes translate_StmtList(Node StmtList);
 static InterCodes translate_Cond(Node Exp,int label_true, int label_false);
 static InterCodes translate_Args(Node Args,ArgsList* args_list);
 
+static void init_irSymtab(){
+    irSymtab = (irSymtabNode*)malloc(irSYMTAB_NR*sizeof(irSymtabNode));
+    for(int i=0;i<irSYMTAB_NR;i++){
+        irSymtab[i]=(irSymtabNode)malloc(sizeof(struct irSymtabNode_));
+        irSymtab[i]->name[0]='\0';
+        irSymtab[i]->next=NULL;
+    }
+}
+
+static void free_irSymtab(){
+    for(int i=0;i<irSYMTAB_NR;i++)
+        free_irSymtabNode(irSymtab[i]);
+    free(irSymtab);
+}
+
+static void free_irSymtabNode(irSymtabNode node){
+    if(node->next!=NULL)
+        free_irSymtabNode(node->next);
+
+    free(node);
+}
+
+static void addVariable(const char* name, int no){
+    irSymtabNode node = (irSymtabNode)malloc(sizeof(struct irSymtabNode_));
+    unsigned int hash_code = hash_pjw(name);
+    strcpy(node->name,name);
+    node->variable_no = no;
+    node->next = irSymtab[hash_code]->next;
+    irSymtab[hash_code]->next = node;
+}
+
+static int checkVariable(const char* name){
+    irSymtabNode node;
+    unsigned int hash_code = hash_pjw(name);
+    node = irSymtab[hash_code];
+    while(node->next!=NULL){
+        node = node->next;
+        if(!strcmp(name,node->name))
+            return node->variable_no;
+    }
+    return -1;
+}
+
+
 static int new_label(){
     int ret = LABEL_NO;
     LABEL_NO++;
+    return ret;
+}
+
+static int new_variable(){
+    int ret = VARIABLE_NO;
+    VARIABLE_NO++;
     return ret;
 }
 
@@ -82,12 +147,17 @@ void generateIR(Node Program){
     TempVAR_NO=1;
     AllocVAR_NO=1;
     FLAG=1;
+    VARIABLE_NO = 1;
+    init_irSymtab();
     InterCodes intercodes = translate_Program(Program);
-    if(FLAG)
-        printIR(intercodes);
+    if(FLAG){
+        //printIR(intercodes);
+        generateASM(intercodes);
+    }
     else
         printf("Cannot translate: Code contains variables of multi-dimensional array type or parameters of array type.\n");
 
+    free_irSymtab();
     deleteIR(intercodes);
 }
 
@@ -123,6 +193,7 @@ static Operand cpyOperand(Operand src){
     {
     case irVARIABLE:
         strcpy(dest->u.id,src->u.id);
+        dest->u.value = src->u.value;
         break;
 
     case irCONSTANT:
@@ -220,7 +291,10 @@ static InterCodes translate_ParamDec(Node ParamDec){
     intercode->code->u.param = new_operand();
     intercode->code->u.param->kind = irVARIABLE;
     intercode->code->u.param->which = irSELF;
+    intercode->code->u.param->u.value = new_variable();
     strcpy(intercode->code->u.param->u.id,ID->node_value);
+    addVariable(ID->node_value,intercode->code->u.param->u.value);
+
     return intercode;
 }
 
@@ -260,6 +334,8 @@ static InterCodes translate_Dec(Node Dec){
     int size = sizeofType(type);
     InterCodes code1 = NULL;
     InterCodes code2 = NULL;
+    int no = new_variable();
+    addVariable(ID->node_value,no);
     if(type->kind!=BASIC){
         code1 = new_intercodes();
         code1->code = new_intercode();
@@ -275,7 +351,10 @@ static InterCodes translate_Dec(Node Dec){
         Operand right = cpyOperand(alloc);
         left->which = irSELF;
         left->kind = irVARIABLE;
+        left->u.value = no;
         strcpy(left->u.id,ID->node_value);
+        
+
         right->which = irADDRESS;;
         code2->code->u.assign.left = left;
         code2->code->u.assign.right = right;
@@ -297,6 +376,7 @@ static InterCodes translate_Dec(Node Dec){
         Operand left = new_operand();
         left->kind = irVARIABLE;
         left->which = irSELF;
+        left->u.value = no;
         strcpy(left->u.id,ID->node_value);
         code4->code->u.assign.left = left;
 
@@ -326,6 +406,8 @@ static InterCodes translate_Exp(Node Exp,Operand place){
             if(type->kind==BASIC){
                 place->kind = irVARIABLE;
                 place->which = irSELF;
+                int no = checkVariable(ID->node_value);
+                place->u.value = no;
                 strcpy(place->u.id,ID->node_value);
                 return NULL;
             }
@@ -335,6 +417,12 @@ static InterCodes translate_Exp(Node Exp,Operand place){
                 intercodes->code->kind = irASSIGN;
                 Operand t1 = new_tempvar();
                 t1->kind = irVARIABLE;
+                int no = checkVariable(ID->node_value);
+                if(no ==-1){
+                    no = new_variable();
+                    addVariable(ID->node_value,no);
+                }
+                t1->u.value = no;
                 strcpy(t1->u.id,ID->node_value);
                 if(place->which == irSELF)
                     t1->which = irSELF;
@@ -445,6 +533,7 @@ static InterCodes translate_Exp(Node Exp,Operand place){
                 if(t1->kind == irVARIABLE){
                     place->kind  = irVARIABLE;
                     place->which = irSELF;
+                    place->u.value = t1->u.value;
                     strcpy(place->u.id,t1->u.id);
                     freeOperand(t1);
                 }
@@ -1228,7 +1317,7 @@ static void printOp(Operand op){
     switch (op->kind)
     {
     case irVARIABLE:
-        printf("%s",op->u.id);
+        printf("v%d",op->u.value);
         break;
 
     case irCONSTANT:
@@ -1249,6 +1338,7 @@ static void printOp(Operand op){
 }
 
 static void printIR(InterCodes intercodes){
+    //fp = fopen(path,"w");
     for(InterCodes current = intercodes;current!=NULL;current=current->next){
         switch (current->code->kind)
         {
@@ -1360,6 +1450,7 @@ static void printIR(InterCodes intercodes){
             break;
         }
     }
+    //fclose(fp);
 }
 
 static void freeInterCode(InterCode intercode){

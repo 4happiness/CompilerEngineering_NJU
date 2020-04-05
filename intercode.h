@@ -3,15 +3,22 @@
 #ifndef __INTERCODE_H__
 #define __INTERCODE_H__
 
+typedef struct irSymtabNode_* irSymtabNode; 
 typedef struct Operand_* Operand;
 typedef struct InterCode_* InterCode;
 typedef struct InterCodes_* InterCodes;
 typedef struct ArgsList_* ArgsList;
+struct irSymtabNode_{
+    char name[50];
+    int variable_no;
+    irSymtabNode next;
+};
+
 struct Operand_
 {
     enum {irSELF,irADDRESS,irVALUE} which;
     enum {irVARIABLE, irCONSTANT, irTempVAR, irAllocVAR} kind;
-    union 
+    struct 
     {
         char id[50];
         int value;
@@ -20,6 +27,8 @@ struct Operand_
 
 struct InterCode_
 {
+    int blockbeg;
+
     enum {irLABEL, irFUNCTION, irASSIGN, irPLUS, irMINUS, irSTAR,
         irDIV, irGOTO, irCOND, irRETURN, irDEC,
         irARG, irCALL, irPARAM, irREAD, irWRITE
